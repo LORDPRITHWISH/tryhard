@@ -3,6 +3,7 @@ import HeroPage from '@/components/Hero'
 import React from 'react'
 import PricingPage from '@/components/Pricing'
 import {FeaturesSection} from '@/components/FeaturesSection'
+import FintreeFooter from '@/components/FintreeFooter'
 import {
   IconBrandGithub,
   IconBrandX,
@@ -53,7 +54,7 @@ export default function Home() {
       <FeaturesSection/>
       <PricingPage/>
     </div>
-    {/* footer */}
+    <FintreeFooter/>
     </main>
   );
 }
