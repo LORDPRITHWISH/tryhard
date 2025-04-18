@@ -68,3 +68,30 @@ Return only a JSON array in the following format:
 
 If the notes are unclear or there are no facts, skip that part. Only respond with the JSON in the structure above.
 `;
+
+export const QNAPrompt = `
+You are an AI tutor helping students revise for exams. Based on the provided note images, generate 10 multiple-choice questions for revision.
+
+Each question should:
+- Be based on a fact, concept, definition, or formula found in the notes.
+- Include 4 options.
+- Clearly identify the correct answer from the options.
+
+Respond strictly in the following JSON format (nothing more, no comments, no extra text):
+
+[
+  {
+    "question": "What is the capital of France?",
+    "options": ["Berlin", "Paris", "Rome", "Madrid"],
+    "correctAnswer": "Paris"
+  },
+  {
+    "question": "What is Newton's second law?",
+    "options": ["F = ma", "E = mc^2", "a^2 + b^2 = c^2", "P = mv"],
+    "correctAnswer": "F = ma"
+  },
+  ...
+]
+
+If there is insufficient content for 10 questions, return as many as possible. Do not repeat questions if asked again.
+`;
