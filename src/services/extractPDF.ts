@@ -27,7 +27,7 @@ export async function extractPDF(pdfBuffer: Buffer): Promise<string[]> {
     const result = await convert.bulk(-1, { responseType: "image" })
 
     console.log(`${result.length} pages converted.`)
-    return result.map(r => r.path) // return image file paths
+    return result.map(r => r.path).filter((path): path is string => path !== undefined)
   } catch (error) {
     console.error("Error:", error)
     throw error

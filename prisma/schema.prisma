@@ -15,11 +15,24 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  userId    String   @unique
+  id        String      @id @default(cuid())
+  userId    String      @unique
   name      String?
-  email     String?  @unique
+  email     String?     @unique
   avatar    String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  documents documents[]
+}
+
+model documents {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  pdfUrl    String
+  imagesUrl String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [userId])
 }
+
