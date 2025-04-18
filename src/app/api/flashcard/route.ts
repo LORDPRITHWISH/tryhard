@@ -1,7 +1,9 @@
-import { extractPDF } from "@/app/services/extractPDF";
+import { extractPDF } from "@/services/extractPDF";
+import { flashcardPrompt } from "@/app/AI/prompt";
+import { NextRequest } from "next/server";
 import { scanReceipts } from "../summary/route";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const file = formData.get("file") as File;
 
@@ -12,8 +14,7 @@ export async function POST(req: Request) {
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
     const images = await extractPDF(buffer);
-    console.log(images);
-    const receiptData = await scanReceipts(images);
+    const receiptData = await scanReceipts(images, flashcardPrompt);
     return Response.json(receiptData, { status: 200 });
   } catch (error: unknown) {
     console.log(error);
