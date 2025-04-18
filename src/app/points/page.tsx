@@ -91,7 +91,7 @@ export default function SpaceCards() {
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-transparent text-white font-sans">
       {/* Main container */}
-      <div className="relative w-full max-w-lg px-4">
+      <div className="relative w-full max-w-2xl px-4">
         {/* Card */}
         <div
           className={`relative h-96 w-full rounded-xl p-6 bg-gradient-to-br from-gray-800 to-gray-900 shadow-xl border border-indigo-500/20 transition-opacity duration-300 ${
@@ -100,9 +100,7 @@ export default function SpaceCards() {
         >
           {/* Symbol with glowing effect */}
           <div className="relative flex justify-center items-center mb-6">
-            {/* Pulsing glow background */}
-            {/* <div className="absolute w-20 h-20 bg-indigo-500/30 rounded-full opacity-20 animate-pulse"></div> */}
-            {/* <div className="absolute w-16 h-16 bg-indigo-400/20 rounded-full opacity-10 animate-ping"></div> */}
+  
 
             {/* Symbol */}
             <div className="relative flex justify-center items-center">
@@ -148,7 +146,7 @@ export default function SpaceCards() {
         </div>
 
         {/* Navigation controls */}
-        <div className="absolute inset-x-0 top-1/2 flex justify-between items-center -translate-y-1/2 px-2">
+        <div className="absolute inset-x-0 top-1/3 flex justify-between items-center translate-y-3 px-8">
           <button onClick={goToPrevCard} className="bg-gray-800/50 hover:bg-indigo-800/50 rounded-full p-2 text-white transition-colors" aria-label="Previous card">
             ←
           </button>
