@@ -4,7 +4,7 @@ const HeroPage = () => {
   return (
     <div>
         <section className="max-w-4xl mx-auto mt-16 text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight text-black">
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight text-blue-100">
           Optimize
           <span className="inline-flex items-center justify-center mx-2">
             <span className="relative">
