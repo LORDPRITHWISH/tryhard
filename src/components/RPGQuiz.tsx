@@ -140,7 +140,7 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
 
       {/* Main Quiz Container */}
       <motion.div
-        className="mx-auto w-full max-w-3xl rounded-lg shadow-xl overflow-hidden bg-gray-900/90 relative z-10"
+        className="mx-auto w-full max-w-3xl rounded-lg shadow-xl overflow-hidden bg-gray-950/90 relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -148,20 +148,10 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
           boxShadow: "0 0 25px rgba(99, 102, 241, 0.3), 0 0 5px rgba(79, 70, 229, 0.5)"
         }}
       >
-        {/* Animated border effect */}
-        <div className="absolute inset-0 rounded-lg p-[2px] overflow-hidden">
-          <div 
-            className="absolute inset-0 rounded-lg"
-            style={{ 
-              background: borderGradient,
-              filter: "blur(1px)"
-            }}
-          />
-          <div className="absolute inset-[2px] rounded-lg bg-gray-900/95" />
-        </div>
+      
 
         {/* Header with progress indicators */}
-        <div className="relative bg-gray-900/90 py-4 px-8 border-b border-indigo-800/80 z-10">
+        <div className="relative bg-gray-950/90 py-4 px-8 border-b border-indigo-800/80 z-10">
           <motion.div
             className="absolute top-0 left-0 h-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600"
             style={{ width: `${(currentStep / totalSteps) * 100}%` }}
@@ -225,55 +215,56 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
 
         {/* Review Mode Banner with Continue Button - shows when viewing answered questions */}
         {isCurrentQuestionAnswered && !showFeedback && !isCompleted && (
-          <div className="bg-gradient-to-r from-indigo-900/70 via-purple-900/70 to-indigo-900/70 border-t border-indigo-700/80 p-3 flex justify-between items-center z-10">
-            <div className="flex items-center">
-              <motion.span 
-                className="text-yellow-300 text-xl inline-block mr-2"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity
-                }}
-              >
-                ★
-              </motion.span>
-              <span className="text-indigo-200 font-medium">
-                REVIEW MODE
-                <span className="ml-2 text-indigo-200/80">You cannot change your answer</span>
-              </span>
-            </div>
-
-            <button 
-              onClick={goToNextUnanswered} 
-              className="bg-indigo-700 hover:bg-indigo-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors"
-              style={{ 
-                boxShadow: "0 0 10px rgba(99, 102, 241, 0.5)" 
-              }}
+            <div
+                className="bg-gradient-to-r from-indigo-900/70 via-purple-900/70 to-indigo-900/70 border-t border-indigo-700/80 p-3 flex justify-between items-center z-50 relative"
+                style={{ boxShadow: "0 0 10px rgba(99, 102, 241, 0.5)" }}
             >
-              <span>Continue Quest</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </button>
-          </div>
+                <div className="flex items-center">
+                    <motion.span
+                        className="text-yellow-300 text-xl inline-block mr-2"
+                        animate={{
+                            scale: [1, 1.2, 1],
+                            rotate: [0, 5, -5, 0],
+                        }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                        }}
+                    >
+                        ★
+                    </motion.span>
+                    <span className="text-indigo-200 font-medium">
+                        REVIEW MODE
+                        <span className="ml-2 text-indigo-200/80">
+                            You cannot change your answer
+                        </span>
+                    </span>
+                </div>
+                <button
+                    onClick={goToNextUnanswered}
+                    className="bg-indigo-700 hover:bg-indigo-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors"
+                >
+                    <span>Continue Quest</span>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
         )}
 
         {/* Footer */}
-        <div className="bg-gray-900/90 border-t border-indigo-800/80 p-4 flex justify-between items-center z-10">
+        <div className="bg-gray-950/90 border-t border-indigo-800/80 p-4 flex justify-between items-center z-10">
           <div className="text-indigo-400 font-mono">
             <span className="text-indigo-500">QUERY</span>: {currentStep} / {totalSteps}
           </div>

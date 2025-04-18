@@ -56,17 +56,20 @@ const questions = [
 
 export default function Home() {
   return (
-    <div>
-      <div className="App">
-        <RPGQuiz
-          questions={questions}
-          theme="fantasy" // Options: "fantasy", "scifi", "medieval"
-          onComplete={(score, total) => {
-            console.log(`Quiz completed! Score: ${score}/${total}`);
-          }}
-        />
-      </div>
-      );
-    </div>
+    <main className="min-h-screen bg-black text-white font-sans">
+      {/* <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg"> */}
+        {/* <h1 className="text-3xl font-bold text-center mb-4">RPG Quiz</h1> */}
+        <div className="App">
+          <RPGQuiz
+            questions={questions}
+            theme="fantasy" // Options: "fantasy", "scifi", "medieval"
+            onComplete={(score, total) => {
+              console.log(`Quiz completed! Score: ${score}/${total}`);
+            }}
+          />
+        </div>
+        
+      {/* </div> */}
+    </main>
   );
 }
