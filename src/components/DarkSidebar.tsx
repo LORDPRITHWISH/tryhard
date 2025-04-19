@@ -2,9 +2,9 @@
 import React, { useState, ReactNode } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
-import { motion } from "framer-motion"; // FIXED: was wrong path
+// import { motion } from "framer-motion"; // FIXED: was wrong path
 import { cn } from "@/lib/utils";
-
+import { SignInButton,SignedOut,SignedIn,UserButton } from "@clerk/nextjs";
 type Props = {
   children: ReactNode;
 };
@@ -14,23 +14,28 @@ export function DarkSidebar({ children }: Props) {
 
   const links = [
     {
-      label: "Dashboard",
-      href: "#",
+      label: "Home",
+      href: "/home",
       icon: <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Profile",
-      href: "#",
+      label: "Points",
+      href: "/points",
       icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Settings",
-      href: "#",
+      label: "Chat",
+      href: "/chat",
       icon: <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Logout",
-      href: "#",
+      label: "About",
+      href: "/about",
+      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+    {
+      label: "Question",
+      href: "/question",
       icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
   ];
@@ -50,16 +55,18 @@ export function DarkSidebar({ children }: Props) {
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} className="" />
               ))}
+              <div>
+              <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              
+            </SignedIn>
+              </div>
             </div>
           </div>
           <div>
-            <SidebarLink
-              link={{
-                label: "Manu Arora",
-                href: "#",
-                icon: <img src="https://assets.aceternity.com/manu.png" className="h-7 w-7 shrink-0 rounded-full" width={50} height={50} alt="Avatar" />,
-              }}
-            />
+          <UserButton />
           </div>
         </SidebarBody>
       </Sidebar>
