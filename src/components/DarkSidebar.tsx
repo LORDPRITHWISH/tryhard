@@ -4,7 +4,7 @@ import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
 // import { motion } from "framer-motion"; // FIXED: was wrong path
 import { cn } from "@/lib/utils";
-import { SignInButton,SignedOut,SignedIn,UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 type Props = {
   children: ReactNode;
 };
@@ -47,7 +47,7 @@ export function DarkSidebar({ children }: Props) {
         "h-screen"
       )}
     >
-      <Sidebar open={open} setOpen={setOpen} >
+      <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="sticky flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             {/* <Logo /> */}
@@ -56,17 +56,17 @@ export function DarkSidebar({ children }: Props) {
                 <SidebarLink key={idx} link={link} className="" />
               ))}
               <div>
-              <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              
-            </SignedIn>
+                <SignedOut>
+                  <SignInButton />
+                </SignedOut>
+                <SignedIn></SignedIn>
               </div>
             </div>
           </div>
           <div>
-          <UserButton />
+            <div className="flex w-full items-center justify-between ">
+              <UserButton />
+            </div>
           </div>
         </SidebarBody>
       </Sidebar>
