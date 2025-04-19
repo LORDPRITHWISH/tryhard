@@ -57,16 +57,20 @@ export function DarkSidebar({ children }: Props) {
               ))}
               <div>
                 <SignedOut>
+                  <div className="flex w-full items-center justify-between ">
                   <SignInButton />
+                  </div>
+                  
                 </SignedOut>
                 <SignedIn></SignedIn>
+              </div>
+              <div className="flex w-full items-center justify-between ">
+              <UserButton />
               </div>
             </div>
           </div>
           <div>
-            <div className="flex w-full items-center justify-between ">
-              <UserButton />
-            </div>
+            
           </div>
         </SidebarBody>
       </Sidebar>
