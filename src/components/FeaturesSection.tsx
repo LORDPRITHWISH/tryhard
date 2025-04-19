@@ -36,7 +36,7 @@ const features = [
 
 export const FeaturesSection = () => {
   return (
-    <section className="min-h-screen w-full from-gray-900 to-black py-20 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-1xl w-full from-gray-900 to-black py-7 px-4 sm:px-6 lg:px-8 mb-0.5">
       <div className="max-w-7xl mx-auto">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm text-gray-300 mb-4">
