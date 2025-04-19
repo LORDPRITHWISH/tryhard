@@ -7,13 +7,13 @@ import { useParams } from "next/navigation";
 export default function Home() {
   const [questions, setQuestions] = useState([]);
 
-    const { reference } = useParams();
+    const { id } = useParams();
   
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const res = await axios.get("/api/quiz", { params: { reference } });
+        const res = await axios.get("/api/quiz", { params: { id } });
         setQuestions(res.data);
       } catch (err) {
         console.error("Failed to fetch questions", err);
