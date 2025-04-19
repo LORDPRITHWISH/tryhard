@@ -4,7 +4,7 @@ import React from 'react'
 import PricingPage from '@/components/Pricing'
 import {FeaturesSection} from '@/components/FeaturesSection'
 import FintreeFooter from '@/components/FintreeFooter'
-
+import TestimonialsSection from '@/components/Testimonial'
 import {
   IconBrandGithub,
   IconBrandX,
@@ -15,9 +15,9 @@ import {
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-gradient-to-r from-black to-gray-900">
       {/* Navigation Section */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-sm">
+      <div className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
         <div className="flex items-center justify-center h-20 w-full">
           <FloatingDock 
             items={[
@@ -56,6 +56,7 @@ export default function Home() {
         <div className="space-y-20">
           <HeroPage />
           <FeaturesSection />
+          <TestimonialsSection/>
           <PricingPage />
         </div>
       </div>

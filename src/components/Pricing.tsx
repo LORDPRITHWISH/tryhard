@@ -1,26 +1,9 @@
 "use client"
 export default function PricingPage() {
     return (
-      <div className="min-h-screen  from-gray-900 to-black text-white flex flex-col items-center justify-center relative overflow-hidden mt-5">
+      <div className="min-h-screen bg-gradient-to-r from-black to-gray-900 text-white flex flex-col items-center justify-center relative overflow-hidden mt-0">
         {/* Background grid */}
-        <div className="absolute left-16 right-16 top-16 h-px bg-gray-700/20 rounded-full"></div>
-        <div className="absolute left-16 right-16 top-1/2 h-px bg-gray-700/20 rounded-full"></div>
-        <div className="absolute left-16 right-16 bottom-16 h-px bg-gray-700/20 rounded-full"></div>
-      
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-16 left-16"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-16 left-1/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-16 left-2/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-16 right-16"></div>
-
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-1/2 left-16"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-1/2 left-1/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-1/2 left-2/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full top-1/2 right-16"></div>
-
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full bottom-16 left-16"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full bottom-16 left-1/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full bottom-16 left-2/3"></div>
-        <div className="absolute w-1.5 h-1.5 bg-gray-700/20 rounded-full bottom-16 right-16"></div>
+       
         
         {/* Header */}
         <div className="text-center mb-16 z-10 px-4">
