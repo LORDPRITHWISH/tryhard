@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
           summary: receiptData,
         },
       });
-      return Response.json(receiptData, { status: 200 });
+      return Response.json({ summary: receiptData }, { status: 200 });
     }
   } catch (error) {
     console.error("Error scanning receipt:", error);
