@@ -31,7 +31,7 @@ export default function HomePage() {
       console.log(" Uploaded:", upload.data);
       toast("Upload successful!");
       setTimeout(() => {
-        router.push(`/world/${upload.data.id}`);
+        router.push(`/world/${upload.data.data.id}`);
       }, 2000);
     } catch (error) {
       console.error("Upload failed:", error);
