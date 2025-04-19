@@ -5,12 +5,12 @@ import { TextHoverEffect } from '@/components/TextHoverEffect'
 
 export default function FintreeFooter() {
   return (
-    <footer className="bg-black py-16 px-4 md:px-12">
+    <footer className="bg-black py-16 px-1 md:px-8">
       {/* Logo with Hover Text Effect */}
       {/* <div className="h-64 flex items-center justify-center mb-12">
         <TextHoverEffect text="FINTREE" />
       </div> */}
-      <div className="h-[40rem] flex items-center justify-center mb-2">
+      <div className="h-[30rem] flex items-center justify-center mb-1">
       <TextHoverEffect text="ACET" />
         </div>
       

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 interface FeatureCardProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: string; // changed from React.ReactNode to string
   className?: string;
 }
 
@@ -19,7 +19,12 @@ export const FeatureCard = ({ title, description, icon, className }: FeatureCard
       )}
     >
       <div className="space-y-4">
-        {icon}
+        <img
+          src={icon}
+          alt={title}
+          className="w-12 h-12 object-contain"
+          loading="lazy"
+        />
         <h3 className="text-xl font-semibold text-white group-hover:text-white/90">
           {title}
         </h3>
