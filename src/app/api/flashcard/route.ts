@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       return new Response("Document not found", { status: 404 });
     }
     if (docs[0].isFlashDone) {
-      return Response.json({ QNA: docs[0].flashCard }, { status: 200 });
+      return Response.json({ flashcard: docs[0].flashCard }, { status: 200 });
     } else {
       const publicId = docs[0].publicId;
       const imagepaths = [];
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
           flashCard: receiptData,
         },
       });
-      return Response.json(receiptData, { status: 200 });
+      return Response.json({ flashcard: receiptData }, { status: 200 });
     }
   } catch (error: unknown) {
     return new Response("Error scanning receipt" + error, { status: 500 });

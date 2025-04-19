@@ -26,3 +26,10 @@ export async function downloadImages(imageUrls: string[]): Promise<string[]> {
   console.log(`${downloadedPaths.length} images downloaded.`);
   return downloadedPaths;
 }
+
+export const fetchPDFBuffer = async (pdfUrl: string): Promise<Buffer> => {
+  const response = await axios.get(pdfUrl, {
+    responseType: "arraybuffer",
+  });
+  return Buffer.from(response.data, "binary");
+};
