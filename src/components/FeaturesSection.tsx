@@ -36,14 +36,14 @@ const features = [
 
 export const FeaturesSection = () => {
   return (
-    <section className="min-h-1xl w-full from-gray-900 to-black py-7 px-4 sm:px-6 lg:px-8 mb-0.5">
+    <section className=" bg-gradient-to-r from-black to-gray-900 min-h-1xl w-full py-7 px-4 sm:px-6 lg:px-8 mb-0.5">
       <div className="max-w-7xl mx-auto">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm text-gray-300 mb-4">
             Features
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-            AI That Accelerates Your Business
+            AI That Accelerates Your Studies
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Unleash the Power of AI with These Cutting-Edge Features

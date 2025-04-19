@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Button from '@/components/ui/getBtn'
 const HeroPage = () => {
   return (
     <div>
@@ -80,10 +81,10 @@ const HeroPage = () => {
           growth
         </h1>
 
-        <div className="mt-12">
-          <Link href="#" className="bg-[#1a1a1a] text-white px-8 py-3 rounded-full font-medium inline-block">
-            Book a Demo
-          </Link>
+        <div className="mt-10 p-7">
+          <div className=" text-white px-12 py-3 rounded-full font-xl inline-block">
+           <Button/>
+          </div>
         </div>
       </section>
     </div>
