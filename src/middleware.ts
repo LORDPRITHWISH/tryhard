@@ -1,12 +1,26 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
+import { NextResponse } from "next/server";
 const isProtectedRoute = createRouteMatcher([
-  "/api/webhook/user"
+  // "/api/webhook/user"
+  "/about(.*)",
+  "/chat(.*)",
+  "/home(.*)",
+  "/pages(.*)",
+  "/points(.*)",
+  "/questions(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  console.log(isProtectedRoute(req));
-  if (!isProtectedRoute(req)) await auth.protect();
+  // console.log(isProtectedRoute(req));
+  // if (!isProtectedRoute(req)) await auth.protect();
+  const { userId } = await auth();
+
+  if (!userId && isProtectedRoute(req)) {
+    const { redirectToSignIn } = await auth();
+    return redirectToSignIn();
+  }
+
+  return NextResponse.next();
 });
 
 export const config = {
