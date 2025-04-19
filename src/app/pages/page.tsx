@@ -1,10 +1,6 @@
-import React from 'react';
+"use client";
 const HomePage = () => {
-  return (
-    <div>
+  return <div></div>;
+};
 
-    </div>
-  )
-}
-
-export default HomePage
+export default HomePage;
