@@ -50,7 +50,7 @@ export async function POST(req: Request) {
           qna: receiptData,
         },
       });
-      return Response.json(receiptData, { status: 200 });
+      return Response.json({ QNA: receiptData }, { status: 200 });
     }
   } catch (error: unknown) {
     console.log(error);

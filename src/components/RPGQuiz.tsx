@@ -21,8 +21,7 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const totalSteps = questions.length;
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number }>>([]);
-  const [borderAnimation, setBorderAnimation] = useState(0);
+  // const [borderAnimation, setBorderAnimation] = useState(0);
 
   // Animate the border
   useEffect(() => {
@@ -46,14 +45,6 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
   const score = answers.filter((answer, index) => answer === questions[index].correctAnswer).length;
 
   // Generate starfield background
-  useEffect(() => {
-    const newStars = Array.from({ length: 100 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-    }));
-    setStars(newStars);
-  }, []);
 
   const handleAnswerSelect = (selectedAnswer: string) => {
     // Check if this question has already been answered
@@ -104,39 +95,10 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
   // Border animation gradient value
 
   return (
-    <div className="flex min-h-full flex-1 flex-col items-center justify-center p-4 relative bg-gray-950 overflow-hidden">
-      {/* Static Star Background with twinkling animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        {stars.map((star, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-white"
-            style={{
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              opacity: Math.random() * 0.7 + 0.3,
-              boxShadow: `0 0 ${star.size * 2}px ${star.size / 2}px rgba(255,255,255,0.8)`
-            }}
-            animate={{
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 3,
-              repeat: Infinity,
-              repeatType: "mirror",
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
-      </div>
-
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center p-4 relative">
+      
       {/* Enhanced space background with nebula effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/50 via-purple-950/20 to-black/70" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(99,102,241,0.15),transparent_70%)]" />
-
+      
       {/* Main Quiz Container */}
       <motion.div
         className="mx-auto w-full max-w-3xl rounded-lg shadow-xl overflow-hidden bg-gray-950/90 relative z-10"
