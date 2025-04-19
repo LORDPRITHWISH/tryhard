@@ -6,21 +6,20 @@ import { useParams } from "next/navigation";
 
 export default function Home() {
   const [spaceCards, setSpaceCards] = useState([]);
-
-  const { reference } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await axios.get("/api/flashcard", { params: { reference } });
+        const res = await axios.post("/api/flashcard", { id: id },{withCredentials: true});
         setSpaceCards(res.data);
       } catch (err) {
         console.error("Failed to fetch flashcards", err);
       }
     };
 
-    if (reference) fetchCards();
-  }, [reference]);
+    if (id) fetchCards();
+  }, [id]);
 
   return (
     <div className="min-h-screen bg-black text-white font-sans flex flex-col justify-center items-center">
