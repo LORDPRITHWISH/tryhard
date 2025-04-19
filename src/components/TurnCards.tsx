@@ -1,62 +1,29 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 
-export default function SpaceCards() {
+interface TurnCardsProps {
+  cardData: {
+    title: string;
+    symbol: string;
+    facts: string[];
+  }[];
+}
+
+export default function TurnCards({ cardData }: TurnCardsProps) {
   const [currentCard, setCurrentCard] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Space data array
-  const spaceData = [
-    {
-      symbol: "⋆",
-      title: "Neutron Stars",
-      facts: [
-        "Neutron stars can rotate up to 600 times per second",
-        "They have a diameter of only about 20 kilometers",
-        "Their density is so extreme that a teaspoon would weigh billions of tons",
-      ],
-    },
-    {
-      symbol: "⊛",
-      title: "Black Holes",
-      facts: [
-        "The point of no return around a black hole is called the event horizon",
-        "Supermassive black holes exist at the center of most galaxies",
-        "Time appears to slow down near a black hole's event horizon",
-      ],
-    },
-    {
-      symbol: "⊕",
-      title: "Exoplanets",
-      facts: [
-        "Over 5,000 exoplanets have been confirmed as of 2024",
-        "Some exoplanets orbit their stars in just a few hours",
-        "There are 'rogue planets' that drift through space with no star",
-      ],
-    },
-    {
-      symbol: "≋",
-      title: "Nebulae",
-      facts: ["Nebulae are vast clouds of gas and dust in space", "They can be sites of new star formation", "The Pillars of Creation is one of the most famous nebulae"],
-    },
-    {
-      symbol: "◎",
-      title: "Pulsars",
-      facts: [
-        "Pulsars emit beams of radiation from their magnetic poles",
-        "They can be used as cosmic lighthouses for navigation",
-        "The first pulsar was discovered in 1967 by Jocelyn Bell Burnell",
-      ],
-    },
-  ];
+  if (!cardData) {
+    return <div>Loading...</div>;
+  }
 
   // Simple transition to next card
   const goToNextCard = () => {
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentCard((prev) => (prev + 1) % spaceData.length);
+      setCurrentCard((prev) => (prev + 1) % cardData.length);
       setIsTransitioning(false);
     }, 300);
   };
@@ -65,7 +32,7 @@ export default function SpaceCards() {
   const goToPrevCard = () => {
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentCard((prev) => (prev - 1 + spaceData.length) % spaceData.length);
+      setCurrentCard((prev) => (prev - 1 + cardData.length) % cardData.length);
       setIsTransitioning(false);
     }, 300);
   };
@@ -89,19 +56,17 @@ export default function SpaceCards() {
   }, [isPaused]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-transparent text-white font-sans">
+    <div className="flex items-center justify-center w-full bg-transparent text-white font-sans py-10">
       {/* Main container */}
       <div className="relative w-full max-w-2xl px-4">
         {/* Card */}
         <div
-          className={`relative h-96 w-full rounded-xl p-6 bg-gradient-to-br from-gray-800 to-gray-900 shadow-xl border border-indigo-500/20 transition-opacity duration-300 ${
+          className={`relative h-96 w-full rounded-xl p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 shadow-xl border border-indigo-500/20 transition-opacity duration-300 ${
             isTransitioning ? "opacity-0" : "opacity-100"
           }`}
         >
           {/* Symbol with glowing effect */}
           <div className="relative flex justify-center items-center mb-6">
-  
-
             {/* Symbol */}
             <div className="relative flex justify-center items-center">
               {/* Pulsing glow background */}
@@ -109,16 +74,16 @@ export default function SpaceCards() {
               <div className="absolute w-16 h-16 bg-indigo-400/20 rounded-full opacity-10 animate-ping"></div>
 
               {/* Symbol */}
-              <div className="relative text-6xl font-mono text-indigo-300 z-10">{spaceData[currentCard].symbol}</div>
+              <div className="relative text-6xl font-mono text-indigo-300 z-10">{cardData[currentCard].symbol}</div>
             </div>
           </div>
 
           {/* Title */}
-          <h2 className="text-2xl mb-6 font-semibold tracking-wider text-indigo-100 text-center">{spaceData[currentCard].title}</h2>
+          <h2 className="text-2xl mb-6 font-semibold tracking-wider text-indigo-100 text-center">{cardData[currentCard].title}</h2>
 
           {/* Facts */}
           <div className="space-y-3">
-            {spaceData[currentCard].facts.map((fact, index) => (
+            {cardData[currentCard].facts.map((fact, index) => (
               <p key={index} className="text-sm text-gray-300 text-center">
                 {fact}
               </p>
@@ -147,17 +112,17 @@ export default function SpaceCards() {
 
         {/* Navigation controls */}
         <div className="absolute inset-x-0 top-1/3 flex justify-between items-center translate-y-3 px-8">
-          <button onClick={goToPrevCard} className="bg-gray-800/50 hover:bg-indigo-800/50 rounded-full p-2 text-white transition-colors" aria-label="Previous card">
+          <button onClick={goToPrevCard} className="bg-gray-600/50 hover:bg-slate-950/50 rounded-full p-2 text-white transition-colors" aria-label="Previous card">
             ←
           </button>
-          <button onClick={goToNextCard} className="bg-gray-800/50 hover:bg-indigo-800/50 rounded-full p-2 text-white transition-colors" aria-label="Next card">
+          <button onClick={goToNextCard} className="bg-gray-600/50 hover:bg-slate-950/50 rounded-full p-2 text-white transition-colors" aria-label="Next card">
             →
           </button>
         </div>
 
         {/* Progress indicators */}
         <div className="mt-16 flex justify-center space-x-2">
-          {spaceData.map((_, index) => (
+          {cardData.map((_, index) => (
             <button
               key={index}
               onClick={() => {

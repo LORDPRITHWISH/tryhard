@@ -102,7 +102,6 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
   };
 
   // Border animation gradient value
-  const borderGradient = `conic-gradient(from ${borderAnimation * 3.6}deg, rgba(99, 102, 241, 0.6), rgba(147, 51, 234, 0.8), rgba(59, 130, 246, 0.7), rgba(99, 102, 241, 0.6))`;
 
   return (
     <div className="flex min-h-full flex-1 flex-col items-center justify-center p-4 relative bg-gray-950 overflow-hidden">

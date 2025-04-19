@@ -14,7 +14,7 @@
     "@clerk/nextjs": "^6.16.0",
     "@cloudinary/react": "^1.14.1",
     "@google/generative-ai": "^0.24.0",
-    "@prisma/client": "^6.6.0",
+    "@prisma/client": "6.2.1",
     "@tabler/icons-react": "^3.31.0",
     "ai": "^4.3.9",
     "axios": "^1.8.4",
