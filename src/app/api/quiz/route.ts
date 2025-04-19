@@ -21,21 +21,37 @@ export async function POST(req: Request) {
         id: true,
         pageCount: true,
         publicId: true,
+        isQNADone: true,
+        qna: true,
       },
     });
     if (!docs.length) {
       return new Response("Document not found", { status: 404 });
     }
-    const publicId = docs[0].publicId;
-    const imagepaths = [];
-    for (let i = 1; i <= docs[0].pageCount; i++) {
-      imagepaths.push(
-        `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
-      );
+
+    if (docs[0].isQNADone) {
+      return Response.json({ QNA: docs[0].qna }, { status: 200 });
+    } else {
+      const publicId = docs[0].publicId;
+      const imagepaths = [];
+      for (let i = 1; i <= docs[0].pageCount; i++) {
+        imagepaths.push(
+          `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
+        );
+      }
+      const images = await downloadImages(imagepaths);
+      const receiptData = await scanReceipts(images, QNAPrompt);
+      await prisma.documents.update({
+        where: {
+          id,
+        },
+        data: {
+          isQNADone: true,
+          qna: receiptData,
+        },
+      });
+      return Response.json(receiptData, { status: 200 });
     }
-    const images = await downloadImages(imagepaths);
-    const receiptData = await scanReceipts(images, QNAPrompt);
-    return Response.json(receiptData, { status: 200 });
   } catch (error: unknown) {
     console.log(error);
     return new Response("Error scanning receipt", { status: 500 });

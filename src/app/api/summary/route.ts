@@ -7,14 +7,6 @@ import { prisma } from "@/lib/db";
 import { NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-interface Note {
-  concepts: string[];
-  formulas: string[];
-  datesAndFacts: string[];
-  summary: string[];
-  memoryTips: string[];
-}
-
 export async function scanReceipts(files: string[], prompt: string) {
   try {
     const model = geminiAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -56,7 +48,7 @@ export async function scanReceipts(files: string[], prompt: string) {
     console.log(cleanedText);
 
     try {
-      const data: Note[] = JSON.parse(cleanedText);
+      const data = JSON.parse(cleanedText);
       return data;
     } catch (parseError) {
       console.error("Error parsing JSON array response:", parseError);
@@ -88,6 +80,8 @@ export async function POST(req: NextRequest) {
         id: true,
         pageCount: true,
         publicId: true,
+        isSummaryDone: true,
+        summary: true,
       },
     });
 
@@ -95,18 +89,31 @@ export async function POST(req: NextRequest) {
       return new Response("Document not found", { status: 404 });
     }
 
-    const publicId = docs[0].publicId;
-    const imagepaths = [];
+    if (docs[0].isSummaryDone) {
+      return Response.json({ summary: docs[0].summary }, { status: 200 });
+    } else {
+      const publicId = docs[0].publicId;
+      const imagepaths = [];
 
-    for (let i = 1; i <= docs[0].pageCount; i++) {
-      imagepaths.push(
-        `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
-      );
+      for (let i = 1; i <= docs[0].pageCount; i++) {
+        imagepaths.push(
+          `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
+        );
+      }
+
+      const images = await downloadImages(imagepaths);
+      const receiptData = await scanReceipts(images, summaryPrompt);
+      await prisma.documents.update({
+        where: {
+          id,
+        },
+        data: {
+          isSummaryDone: true,
+          summary: receiptData,
+        },
+      });
+      return Response.json(receiptData, { status: 200 });
     }
-
-    const images = await downloadImages(imagepaths);
-    const receiptData = await scanReceipts(images, summaryPrompt);
-    return Response.json(receiptData, { status: 200 });
   } catch (error) {
     console.error("Error scanning receipt:", error);
     return new Response("Error scanning receipt", { status: 500 });
