@@ -11,7 +11,7 @@ export default function FintreeFooter() {
         <TextHoverEffect text="FINTREE" />
       </div> */}
       <div className="h-[30rem] flex items-center justify-center mb-1">
-      <TextHoverEffect text="ACET" />
+      <TextHoverEffect text="Zenux" />
         </div>
       
       {/* Footer Links */}
