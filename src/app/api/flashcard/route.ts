@@ -22,22 +22,37 @@ export async function POST(req: NextRequest) {
         id: true,
         pageCount: true,
         publicId: true,
+        isFlashDone: true,
+        flashCard: true,
       },
     });
 
     if (!docs.length) {
       return new Response("Document not found", { status: 404 });
     }
-    const publicId = docs[0].publicId;
-    const imagepaths = [];
-    for (let i = 1; i <= docs[0].pageCount; i++) {
-      imagepaths.push(
-        `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
-      );
+    if (docs[0].isFlashDone) {
+      return Response.json({ QNA: docs[0].flashCard }, { status: 200 });
+    } else {
+      const publicId = docs[0].publicId;
+      const imagepaths = [];
+      for (let i = 1; i <= docs[0].pageCount; i++) {
+        imagepaths.push(
+          `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
+        );
+      }
+      const images = await downloadImages(imagepaths);
+      const receiptData = await scanReceipts(images, flashcardPrompt);
+      await prisma.documents.update({
+        where: {
+          id,
+        },
+        data: {
+          isFlashDone: true,
+          flashCard: receiptData,
+        },
+      });
+      return Response.json(receiptData, { status: 200 });
     }
-    const images = await downloadImages(imagepaths);
-    const receiptData = await scanReceipts(images, flashcardPrompt);
-    return Response.json(receiptData, { status: 200 });
   } catch (error: unknown) {
     return new Response("Error scanning receipt" + error, { status: 500 });
   }
