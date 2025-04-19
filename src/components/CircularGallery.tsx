@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { Renderer, Camera, Transform, Plane, Mesh, Program, Texture } from "ogl";
+import { Renderer, Camera, Transform, Plane, Mesh, Program, Texture, Vec2 } from "ogl";
 
 type GL = Renderer["gl"];
 
@@ -147,6 +147,7 @@ interface MediaProps {
   textColor: string;
   borderRadius?: number;
   font?: string;
+  link?: string;
 }
 
 class Media {
@@ -165,6 +166,7 @@ class Media {
   textColor: string;
   borderRadius: number;
   font?: string;
+  link?: string;
   program!: Program;
   plane!: Mesh;
   title!: Title;
@@ -176,8 +178,9 @@ class Media {
   speed: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  isHovered: boolean = false;
 
-  constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius = 0, font }: MediaProps) {
+  constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius = 0, font, link }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
     this.image = image;
@@ -192,6 +195,7 @@ class Media {
     this.textColor = textColor;
     this.borderRadius = borderRadius;
     this.font = font;
+    this.link = link;
     this.createShader();
     this.createMesh();
     this.createTitle();
@@ -211,11 +215,14 @@ class Media {
         uniform mat4 projectionMatrix;
         uniform float uTime;
         uniform float uSpeed;
+        uniform float uHover;
         varying vec2 vUv;
         void main() {
           vUv = uv;
           vec3 p = position;
           p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
+          // Add a small bump when hovered
+          p.z += uHover * 0.2;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         }
       `,
@@ -225,6 +232,7 @@ class Media {
         uniform vec2 uPlaneSizes;
         uniform sampler2D tMap;
         uniform float uBorderRadius;
+        uniform float uHover;
         varying vec2 vUv;
         
         // Rounded box SDF for UV space
@@ -250,6 +258,11 @@ class Media {
             discard;
           }
           
+          // Add a highlight effect when hovered
+          if (uHover > 0.0) {
+            color.rgb += vec3(0.2, 0.2, 0.2) * uHover;
+          }
+          
           gl_FragColor = vec4(color.rgb, 1.0);
         }
       `,
@@ -260,6 +273,7 @@ class Media {
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
+        uHover: { value: 0 },
       },
       transparent: true,
     });
@@ -319,6 +333,10 @@ class Media {
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
 
+    // Smoothly animate hover state
+    const targetHover = this.isHovered ? 1.0 : 0.0;
+    this.program.uniforms.uHover.value += (targetHover - this.program.uniforms.uHover.value) * 0.1;
+
     const planeOffset = this.plane.scale.x / 2;
     const viewportOffset = this.viewport.width / 2;
     this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
@@ -331,6 +349,22 @@ class Media {
       this.extra += this.widthTotal;
       this.isBefore = this.isAfter = false;
     }
+  }
+
+  // Check if this media item contains the screen point
+  checkHover(point: { x: number; y: number }): boolean {
+    // Convert screen space point to normalized device coordinates (-1 to 1)
+    const ndcX = (point.x / this.screen.width) * 2 - 1;
+    const ndcY = -((point.y / this.screen.height) * 2 - 1);
+
+    // Simple plane intersection test (without rotation, just a box test)
+    const halfWidth = this.plane.scale.x / 2;
+    const halfHeight = this.plane.scale.y / 2;
+
+    const insideX = Math.abs(ndcX - this.plane.position.x) < halfWidth;
+    const insideY = Math.abs(ndcY - this.plane.position.y) < halfHeight;
+
+    return insideX && insideY;
   }
 
   onResize({ screen, viewport }: { screen?: ScreenSize; viewport?: Viewport } = {}) {
@@ -353,11 +387,12 @@ class Media {
 }
 
 interface AppConfig {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
   font?: string;
+  onItemClick?: (index: number, link?: string) => void;
 }
 
 class App {
@@ -376,25 +411,31 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image: string; text: string }[] = [];
+  mediasImages: { image: string; text: string; link?: string }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
+  onItemClick?: (index: number, link?: string) => void;
 
   boundOnResize!: () => void;
   boundOnWheel!: () => void;
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
+  boundOnMouseMove!: (e: MouseEvent) => void;
+  boundOnClick!: (e: MouseEvent) => void;
 
   isDown: boolean = false;
   start: number = 0;
+  hoveredIndex: number = -1;
+  lastMousePosition: Vec2 = new Vec2();
 
-  constructor(container: HTMLElement, { items, bend = 1, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans" }: AppConfig) {
+  constructor(container: HTMLElement, { items, bend = 1, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans", onItemClick }: AppConfig) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
     this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this.onItemClick = onItemClick;
     this.createRenderer();
     this.createCamera();
     this.createScene();
@@ -429,15 +470,17 @@ class App {
     });
   }
 
-  createMedias(items: { image: string; text: string }[] | undefined, bend: number = 1, textColor: string, borderRadius: number, font: string) {
+  createMedias(items: { image: string; text: string; link?: string }[] | undefined, bend: number = 1, textColor: string, borderRadius: number, font: string) {
     const defaultItems = [
       {
         image: `https://picsum.photos/seed/1/800/600?grayscale`,
         text: "Bridge",
+        link: "https://example.com/bridge",
       },
       {
         image: `https://picsum.photos/seed/2/800/600?grayscale`,
         text: "Desk Setup",
+        link: "https://example.com/desk",
       },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
@@ -458,6 +501,7 @@ class App {
         textColor,
         borderRadius,
         font,
+        link: data.link,
       });
     });
   }
@@ -466,6 +510,10 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
+
+    // Store the initial position to determine if this should count as a click
+    this.lastMousePosition.x = "touches" in e ? e.touches[0].clientX : e.clientX;
+    this.lastMousePosition.y = "touches" in e ? e.touches[0].clientY : e.clientY;
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
@@ -491,6 +539,56 @@ class App {
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
     const item = width * itemIndex;
     this.scroll.target = this.scroll.target < 0 ? -item : item;
+  }
+
+  onMouseMove(e: MouseEvent) {
+    // Get normalized device coordinates
+    const rect = this.container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Reset all hover states
+    let hoveredFound = false;
+    this.medias.forEach((media) => {
+      // Check each media for hover
+      const isHovered = media.checkHover({ x, y });
+      media.isHovered = isHovered;
+
+      if (isHovered) {
+        hoveredFound = true;
+        this.hoveredIndex = media.index;
+
+        // Change cursor to pointer when hovering over an item
+        this.container.style.cursor = media.link ? "pointer" : "grab";
+      }
+    });
+
+    // Reset cursor if no item is hovered
+    if (!hoveredFound) {
+      this.hoveredIndex = -1;
+      this.container.style.cursor = "grab";
+    }
+
+    // Store current position for click handling
+    this.lastMousePosition.x = e.clientX;
+    this.lastMousePosition.y = e.clientY;
+  }
+
+  onClick(e: MouseEvent) {
+    // Only handle clicks if we weren't dragging
+    const dragDistance = Math.abs(this.lastMousePosition.x - e.clientX) + Math.abs(this.lastMousePosition.y - e.clientY);
+
+    if (dragDistance < 5 && this.hoveredIndex !== -1) {
+      // Find the actual media item (accounting for repeated items)
+      const actualIndex = this.hoveredIndex % (this.medias.length / 2);
+      const media = this.medias[this.hoveredIndex];
+
+      if (this.onItemClick) {
+        this.onItemClick(actualIndex, media.link);
+      } else if (media.link) {
+        window.open(media.link, "_blank");
+      }
+    }
   }
 
   onResize() {
@@ -528,6 +626,9 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnMouseMove = this.onMouseMove.bind(this);
+    this.boundOnClick = this.onClick.bind(this);
+
     window.addEventListener("resize", this.boundOnResize);
     window.addEventListener("mousewheel", this.boundOnWheel);
     window.addEventListener("wheel", this.boundOnWheel);
@@ -537,6 +638,10 @@ class App {
     window.addEventListener("touchstart", this.boundOnTouchDown);
     window.addEventListener("touchmove", this.boundOnTouchMove);
     window.addEventListener("touchend", this.boundOnTouchUp);
+
+    // Add new event listeners for hover and click
+    this.container.addEventListener("mousemove", this.boundOnMouseMove);
+    this.container.addEventListener("click", this.boundOnClick);
   }
 
   destroy() {
@@ -550,6 +655,11 @@ class App {
     window.removeEventListener("touchstart", this.boundOnTouchDown);
     window.removeEventListener("touchmove", this.boundOnTouchMove);
     window.removeEventListener("touchend", this.boundOnTouchUp);
+
+    // Remove new event listeners
+    this.container.removeEventListener("mousemove", this.boundOnMouseMove);
+    this.container.removeEventListener("click", this.boundOnClick);
+
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
     }
@@ -557,14 +667,15 @@ class App {
 }
 
 interface CircularGalleryProps {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
   font?: string;
+  onItemClick?: (index: number, link?: string) => void;
 }
 
-export default function CircularGallery({ items, bend = 3, textColor = "#ffffff", borderRadius = 0.05, font = "bold 30px DM Sans" }: CircularGalleryProps) {
+export default function CircularGallery({ items, bend = 3, textColor = "#ffffff", borderRadius = 0.05, font = "bold 30px DM Sans", onItemClick }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!containerRef.current) return;
@@ -574,11 +685,12 @@ export default function CircularGallery({ items, bend = 3, textColor = "#ffffff"
       textColor,
       borderRadius,
       font,
+      onItemClick,
     });
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font]);
+  }, [items, bend, textColor, borderRadius, font, onItemClick]);
 
   return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
 }
