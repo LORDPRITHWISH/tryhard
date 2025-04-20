@@ -30,7 +30,7 @@ function getFontSize(font: string): number {
   return match ? parseInt(match[1], 10) : 30;
 }
 
-function createTextTexture(gl: GL, text: string, font: string = "bold 30px monospace", color: string = "black"): { texture: Texture; width: number; height: number } {
+function createTextTexture(gl: GL, text: string, font: string = "bold 50px monospace", color: string = "black"): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not get 2d context");
@@ -41,8 +41,9 @@ function createTextTexture(gl: GL, text: string, font: string = "bold 30px monos
   const fontSize = getFontSize(font);
   const textHeight = Math.ceil(fontSize * 1.2);
 
-  canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  // Make the canvas larger to accommodate bigger text
+  canvas.width = textWidth + 40;
+  canvas.height = textHeight + 40;
 
   context.font = font;
   context.fillStyle = color;
@@ -74,7 +75,7 @@ class Title {
   font: string;
   mesh!: Mesh;
 
-  constructor({ gl, plane, renderer, text, textColor = "#545050", font = "30px sans-serif" }: TitleProps) {
+  constructor({ gl, plane, renderer, text, textColor = "#545050", font = "50px sans-serif" }: TitleProps) {
     autoBind(this);
     this.gl = gl;
     this.plane = plane;
@@ -115,9 +116,11 @@ class Title {
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
-    const textHeightScaled = this.plane.scale.y * 0.15;
+    // Increase the text height scaling for larger text
+    const textHeightScaled = this.plane.scale.y * 0.2;
     const textWidthScaled = textHeightScaled * aspect;
     this.mesh.scale.set(textWidthScaled, textHeightScaled, 1);
+    // Adjust position for larger text
     this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeightScaled * 0.5 - 0.05;
     this.mesh.setParent(this.plane);
   }
@@ -302,12 +305,12 @@ class Media {
       renderer: this.renderer,
       text: this.text,
       textColor: this.textColor,
-      font: this.font,
+      font: this.font || "bold 50px DM Sans", // Default to a larger font size
     });
   }
 
-  update(scroll: { current: number; last: number }, direction: "right" | "left") {
-    this.plane.position.x = this.x - scroll.current - this.extra;
+  update(scroll: { current: number; last: number }) {
+    this.plane.position.x = this.x - scroll.current;
 
     const x = this.plane.position.x;
     const H = this.viewport.width / 2;
@@ -334,31 +337,14 @@ class Media {
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
 
-
     const targetHover = this.isHovered ? 1.0 : 0.0;
     this.program.uniforms.uHover.value += (targetHover - this.program.uniforms.uHover.value) * 0.1;
-
-    const planeOffset = this.plane.scale.x / 2;
-    const viewportOffset = this.viewport.width / 2;
-    this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
-    this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
-    if (direction === "right" && this.isBefore) {
-      this.extra -= this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
-    if (direction === "left" && this.isAfter) {
-      this.extra += this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
   }
-
  
   checkHover(point: { x: number; y: number }): boolean {
-    
     const ndcX = (point.x / this.screen.width) * 2 - 1;
     const ndcY = -((point.y / this.screen.height) * 2 - 1);
 
-  
     const halfWidth = this.plane.scale.x / 2;
     const halfHeight = this.plane.scale.y / 2;
 
@@ -404,6 +390,8 @@ class App {
     target: number;
     last: number;
     position?: number;
+    min: number;
+    max: number;
   };
   onCheckDebounce: (...args: any[]) => void;
   renderer!: Renderer;
@@ -419,7 +407,7 @@ class App {
   onItemClick?: (index: number, link?: string) => void;
 
   boundOnResize!: () => void;
-  boundOnWheel!: () => void;
+  boundOnWheel!: (e: WheelEvent) => void;
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
@@ -431,10 +419,17 @@ class App {
   hoveredIndex: number = -1;
   lastMousePosition: Vec2 = new Vec2();
 
-  constructor(container: HTMLElement, { items, bend = 1, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans", onItemClick }: AppConfig) {
+  constructor(container: HTMLElement, { items, bend = 1, textColor = "#ffffff", borderRadius = 0, font = "bold 50px DM Sans", onItemClick }: AppConfig) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
-    this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 };
+    this.scroll = { 
+      ease: 0.05, 
+      current: 0, 
+      target: 0, 
+      last: 0,
+      min: 0,
+      max: 0 
+    };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
     this.onItemClick = onItemClick;
     this.createRenderer();
@@ -484,8 +479,10 @@ class App {
         link: "https://example.com/desk",
       },
     ];
-    const galleryItems = items && items.length ? items : defaultItems;
-    this.mediasImages = galleryItems.concat(galleryItems);
+    
+    // Use only the provided items without duplication
+    this.mediasImages = items && items.length ? items : defaultItems;
+    
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         geometry: this.planeGeometry,
@@ -505,6 +502,15 @@ class App {
         link: data.link,
       });
     });
+    
+    // Set scroll boundaries
+    if (this.medias.length > 0) {
+      this.scroll.min = 0;
+      // Allow scrolling to the end of the gallery
+      const lastMediaIndex = this.medias.length - 1;
+      const widthOfOneMedia = this.medias[0].width;
+      this.scroll.max = lastMediaIndex * widthOfOneMedia;
+    }
   }
 
   onTouchDown(e: MouseEvent | TouchEvent) {
@@ -512,7 +518,6 @@ class App {
     this.scroll.position = this.scroll.current;
     this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
 
-    
     this.lastMousePosition.x = "touches" in e ? e.touches[0].clientX : e.clientX;
     this.lastMousePosition.y = "touches" in e ? e.touches[0].clientY : e.clientY;
   }
@@ -521,7 +526,7 @@ class App {
     if (!this.isDown) return;
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * 0.05;
-    this.scroll.target = (this.scroll.position ?? 0) + distance;
+    this.scroll.target = Math.min(Math.max((this.scroll.position ?? 0) + distance, this.scroll.min), this.scroll.max);
   }
 
   onTouchUp() {
@@ -529,8 +534,10 @@ class App {
     this.onCheck();
   }
 
-  onWheel() {
-    this.scroll.target += 2;
+  onWheel(e: WheelEvent) {
+    // Update scroll target with limits
+    const delta = e.deltaY * 0.01;
+    this.scroll.target = Math.min(Math.max(this.scroll.target + delta, this.scroll.min), this.scroll.max);
     this.onCheckDebounce();
   }
 
@@ -539,31 +546,26 @@ class App {
     const width = this.medias[0].width;
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
     const item = width * itemIndex;
-    this.scroll.target = this.scroll.target < 0 ? -item : item;
+    this.scroll.target = Math.min(Math.max(item, this.scroll.min), this.scroll.max);
   }
 
   onMouseMove(e: MouseEvent) {
-   
     const rect = this.container.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    
     let hoveredFound = false;
     this.medias.forEach((media) => {
-    
       const isHovered = media.checkHover({ x, y });
       media.isHovered = isHovered;
 
       if (isHovered) {
         hoveredFound = true;
         this.hoveredIndex = media.index;
-
         this.container.style.cursor = media.link ? "pointer" : "grab";
       }
     });
 
-   
     if (!hoveredFound) {
       this.hoveredIndex = -1;
       this.container.style.cursor = "grab";
@@ -574,16 +576,13 @@ class App {
   }
 
   onClick(e: MouseEvent) {
-  
     const dragDistance = Math.abs(this.lastMousePosition.x - e.clientX) + Math.abs(this.lastMousePosition.y - e.clientY);
 
     if (dragDistance < 5 && this.hoveredIndex !== -1) {
-      
-      const actualIndex = this.hoveredIndex % (this.medias.length / 2);
       const media = this.medias[this.hoveredIndex];
 
       if (this.onItemClick) {
-        this.onItemClick(actualIndex, media.link);
+        this.onItemClick(this.hoveredIndex, media.link);
       } else if (media.link) {
         window.open(media.link, "_blank");
       }
@@ -605,14 +604,21 @@ class App {
     this.viewport = { width, height };
     if (this.medias) {
       this.medias.forEach((media) => media.onResize({ screen: this.screen, viewport: this.viewport }));
+      
+      // Update scroll boundaries on resize
+      if (this.medias.length > 0) {
+        const lastMediaIndex = this.medias.length - 1;
+        const widthOfOneMedia = this.medias[0].width;
+        this.scroll.max = lastMediaIndex * widthOfOneMedia;
+      }
     }
   }
 
   update() {
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-    const direction = this.scroll.current > this.scroll.last ? "right" : "left";
+    
     if (this.medias) {
-      this.medias.forEach((media) => media.update(this.scroll, direction));
+      this.medias.forEach((media) => media.update(this.scroll));
     }
     this.renderer.render({ scene: this.scene, camera: this.camera });
     this.scroll.last = this.scroll.current;
@@ -629,7 +635,7 @@ class App {
     this.boundOnClick = this.onClick.bind(this);
 
     window.addEventListener("resize", this.boundOnResize);
-    window.addEventListener("mousewheel", this.boundOnWheel);
+    window.addEventListener("mousewheel", this.boundOnWheel as EventListener);
     window.addEventListener("wheel", this.boundOnWheel);
     window.addEventListener("mousedown", this.boundOnTouchDown);
     window.addEventListener("mousemove", this.boundOnTouchMove);
@@ -638,7 +644,6 @@ class App {
     window.addEventListener("touchmove", this.boundOnTouchMove);
     window.addEventListener("touchend", this.boundOnTouchUp);
 
-   
     this.container.addEventListener("mousemove", this.boundOnMouseMove);
     this.container.addEventListener("click", this.boundOnClick);
   }
@@ -646,7 +651,7 @@ class App {
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener("resize", this.boundOnResize);
-    window.removeEventListener("mousewheel", this.boundOnWheel);
+    window.removeEventListener("mousewheel", this.boundOnWheel as EventListener);
     window.removeEventListener("wheel", this.boundOnWheel);
     window.removeEventListener("mousedown", this.boundOnTouchDown);
     window.removeEventListener("mousemove", this.boundOnTouchMove);
@@ -655,7 +660,6 @@ class App {
     window.removeEventListener("touchmove", this.boundOnTouchMove);
     window.removeEventListener("touchend", this.boundOnTouchUp);
 
-   
     this.container.removeEventListener("mousemove", this.boundOnMouseMove);
     this.container.removeEventListener("click", this.boundOnClick);
 
@@ -674,7 +678,7 @@ interface CircularGalleryProps {
   onItemClick?: (index: number, link?: string) => void;
 }
 
-export default function CircularGallery({ items, bend = 3, textColor = "#ffffff", borderRadius = 0.05, font = "bold 30px DM Sans", onItemClick }: CircularGalleryProps) {
+export default function CircularGallery({ items, bend = 3, textColor = "#ffffff", borderRadius = 0.05, font = "bold 50px DM Sans", onItemClick }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!containerRef.current) return;

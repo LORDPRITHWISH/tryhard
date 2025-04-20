@@ -2,6 +2,7 @@ import { downloadImages, scanReceipts } from "@/services/extractPDF";
 import { QNAPrompt } from "@/app/AI/prompt";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { NextRequest } from "next/server";
 
 export async function POST(req: Request) {
   try {
@@ -56,3 +57,4 @@ export async function POST(req: Request) {
     return new Response("Error scanning receipt", { status: 500 });
   }
 }
+

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import CircularGallery from "@/components/CircularGallery";
 import axios from "axios";
@@ -13,6 +13,22 @@ export default function HomePage() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [worldName, setWorldName] = useState<string>("");
+  const [worldLoading, setWorldLoading] = useState<boolean>(true);
+  const [worlds, setWorlds] = useState<any[]>([]);
+
+  const getAllWorlds = async () => {
+    try {
+      const response = await axios.get("/api/world", { withCredentials: true });
+      setWorlds(response.data.formattedDocuments);
+      setWorldLoading(false);
+    } catch (error) {
+      toast.error("something went wrong while getting the worlds");
+      setWorldLoading(false);
+    }
+  };
+  useEffect(() => {
+    getAllWorlds();
+  }, []);
 
   const handleFileUpload = async () => {
     if (!file) {
@@ -45,28 +61,6 @@ export default function HomePage() {
     }
   };
 
-  const items = [
-    {
-      image: `https://picsum.photos/seed/1/800/600?grayscale`,
-      text: "Bridge",
-      link: "https://google.com",
-    },
-    {
-      image: `https://picsum.photos/seed/2/800/600?grayscale`,
-      text: "dusk Setup",
-      link: "https://hexafalls.tech",
-    },
-    {
-      image: `https://picsum.photos/seed/2/800/600?grayscale`,
-      text: "lol Setup",
-      link: "https://zenux.live",
-    },
-    {
-      image: `https://picsum.photos/seed/2/800/600?grayscale`,
-      text: "Desk Setup",
-      link: "https://quantum.zenux.live",
-    },
-  ];
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col justify-center items-center font-sans">
@@ -83,7 +77,7 @@ export default function HomePage() {
           bend={1}
           textColor="#ffffff"
           borderRadius={0.05}
-          items={items}
+          items={worlds}
         />
       </div>
 

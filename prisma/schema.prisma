@@ -26,21 +26,24 @@ model User {
 }
 
 model documents {
-  id            String   @id @default(cuid())
-  worldName     String
-  userId        String
-  pdfUrl        String
-  pageCount     Int
-  publicId      String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  User          User     @relation(fields: [userId], references: [userId])
-  isQNADone     Boolean  @default(false)
-  isFlashDone   Boolean  @default(false)
-  isSummaryDone Boolean  @default(false)
-  flashCard     Json?
-  summary       Json?
-  qna           Json?
+  id             String    @id @default(cuid())
+  worldName      String
+  userId         String
+  pdfUrl         String
+  pageCount      Int
+  publicId       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  User           User      @relation(fields: [userId], references: [userId])
+  isQNADone      Boolean   @default(false)
+  isFlashDone    Boolean   @default(false)
+  isSummaryDone  Boolean   @default(false)
+  flashCard      Json?
+  summary        Json?
+  qna            Json?
+  qnaMarks       Int       @default(0)
+  submissionTime DateTime?
+  isQnaSolveDone Boolean   @default(false)
 }
 
 model expertBot {
