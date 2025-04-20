@@ -23,6 +23,9 @@ export async function POST(req: Request) {
         publicId: true,
         isQNADone: true,
         qna: true,
+        qnaMarks: true,
+        submissionTime: true,
+        isQnaSolveDone: true,
       },
     });
     if (!docs.length) {
@@ -57,4 +60,3 @@ export async function POST(req: Request) {
     return new Response("Error scanning receipt", { status: 500 });
   }
 }
-
