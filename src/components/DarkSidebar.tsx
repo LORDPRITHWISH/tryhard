@@ -1,10 +1,15 @@
 "use client";
 import React, { useState, ReactNode } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
-// import { motion } from "framer-motion"; // FIXED: was wrong path
+
 import { cn } from "@/lib/utils";
 import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
+import {
+  IconBrandGithub,
+  IconHome,
+  IconNewSection,
+  IconChartBubble,
+} from "@tabler/icons-react";
 type Props = {
   children: ReactNode;
 };
@@ -16,27 +21,27 @@ export function DarkSidebar({ children }: Props) {
     {
       label: "Home",
       href: "/home",
-      icon: <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      icon: <IconHome className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />,
     },
     {
       label: "Points",
       href: "/points",
-      icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      icon: <IconNewSection className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />,
     },
     {
       label: "Chat",
-      href: "/chat",
-      icon: <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      href: "/chat/[id]",
+      icon: <IconChartBubble className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />,
     },
+    // {
+    //   label: "About",
+    //   href: "/about",
+    //   icon: <IconBrandX className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />,
+    // },
     {
-      label: "About",
-      href: "/about",
-      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Question",
-      href: "/question",
-      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      label: "Github",
+      href:"https://github.com/LORDPRITHWISH/tryhard",
+      icon: <IconBrandGithub className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />,
     },
   ];
 
@@ -51,22 +56,23 @@ export function DarkSidebar({ children }: Props) {
         <SidebarBody className="justify-between gap-10">
           <div className="sticky flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             {/* <Logo /> */}
+            <div className="h-5 w-5 text-neutral-500 dark:text-neutral-300">
+            <UserButton />
+              </div> 
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} className="" />
               ))}
               <div>
                 <SignedOut>
-                  <div className="flex w-full items-center justify-between ">
+                  <div className="h-5 w-5 text-neutral-500 dark:text-neutral-300 ">
                   <SignInButton />
                   </div>
                   
                 </SignedOut>
                 <SignedIn></SignedIn>
               </div>
-              <div className="flex w-full items-center justify-between ">
-              <UserButton />
-              </div>
+              
             </div>
           </div>
           <div>

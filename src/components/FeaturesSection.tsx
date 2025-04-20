@@ -3,35 +3,36 @@ import { FeatureCard } from "@/components/ui/FeatureCard";
 
 const features = [
   {
-    title: "Automated Data Analysis",
-    description: "Quickly analyze data and extract insights with AI automation.",
-    icon:"https://ik.imagekit.io/7b4kwmuj2/icon1.svg?updatedAt=1745051855939"
+    title: "Smart Document Upload",
+    description: "Upload PDFs or PPTs and let AI handle the rest—from conversion to analysis.",
+    icon: "https://ik.imagekit.io/7b4kwmuj2/icon1.svg?updatedAt=1745051855939"
   },
   {
-    title: "Predictive Analytics",
-    description: "Forecast trends and make smarter decisions with AI predictions.",
-    icon:"https://ik.imagekit.io/7b4kwmuj2/icon4.svg?updatedAt=1745051869021"
-  },
-  {
-    title: "Natural Language Processing",
-    description: "Process and understand human language for smarter interactions.",
-    icon: "https://ik.imagekit.io/7b4kwmuj2/icon3.svg?updatedAt=1745052046763"
-  },
-  {
-    title: "Customizable AI Models",
-    description: "Easily adapt AI models to fit your business needs.",
+    title: "AI-Powered Summaries",
+    description: "Get concise and effective summaries for faster revision and better retention.",
     icon: "https://ik.imagekit.io/7b4kwmuj2/icon2.svg?updatedAt=1745051989080"
   },
   {
-    title: "Real-Time Decision Making",
-    description: "Make fast, data-driven decisions with AI-powered insights.",
+    title: "Interactive Study Plans",
+    description: "Personalized revision guides and study plans generated from your materials.",
     icon: "https://ik.imagekit.io/7b4kwmuj2/icon3.svg?updatedAt=1745052046763"
   },
   {
-    title: "Scalable Infrastructure",
-    description: "Scale your AI solutions effortlessly as your business grows.",
+    title: "MCQ Practice & Scoring",
+    description: "Test your knowledge with auto-generated questions and get instant scores.",
+    icon: "https://ik.imagekit.io/7b4kwmuj2/icon4.svg?updatedAt=1745051869021"
+  },
+  {
+    title: "Subject-Specific AI Agents",
+    description: "Access expert AI agents for subjects like Computer Networks, DBMS, and more.",
     icon: "https://ik.imagekit.io/7b4kwmuj2/icon3.svg?updatedAt=1745052046763"
+  },
+  {
+    title: "Gamified Learning Experience",
+    description: "Earn points and track your progress as you study smarter with AI.",
+    icon: "https://ik.imagekit.io/7b4kwmuj2/icon1.svg?updatedAt=1745051855939"
   }
+
 ];
 
 export const FeaturesSection = () => {
@@ -39,8 +40,8 @@ export const FeaturesSection = () => {
     <section className=" bg-gradient-to-r from-black to-gray-900 min-h-1xl w-full py-7 px-4 sm:px-6 lg:px-8 mb-0.5">
       <div className="max-w-7xl mx-auto">
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm text-gray-300 mb-4">
-            Features
+        <div className="inline-block border border-gray-600 px-4 py-1 rounded-md mb-4">
+            <span className="text-gray-400">Features</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
             AI That Accelerates Your Studies
