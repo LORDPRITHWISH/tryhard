@@ -1,55 +1,55 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useParams } from "next/navigation"
-import { useState, useEffect, useRef } from "react"
-import { Send, FileText, Loader2, Bot, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { cn } from "@/lib/utils"
+import { useParams } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
+import { Send, FileText, Loader2, Bot, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 interface ChatMessage {
-  role: "user" | "bot"
-  content: string
+  role: "user" | "bot";
+  content: string;
 }
 
 export default function PDFMultiFileChatBot() {
-  const { id } = useParams()
-  const [question, setQuestion] = useState<string>("")
-  const [chat, setChat] = useState<ChatMessage[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isTyping, setIsTyping] = useState<boolean>(false)
+  const { id } = useParams();
+  const [question, setQuestion] = useState<string>("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
-  const chatWindowRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const chatWindowRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const formatBoldText = (text: string): JSX.Element[] => {
-    const parts = text.split(/(\*\*.*?\*\*)/g)
+  const formatBoldText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
     return parts.map((part, index) => {
       if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={index}>{part.slice(2, -2)}</strong>
+        return <strong key={index}>{part.slice(2, -2)}</strong>;
       }
-      return <span key={index}>{part}</span>
-    })
-  }
+      return <span key={index}>{part}</span>;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!question.trim()) {
-      setError("Please enter a question.")
-      return
+      setError("Please enter a question.");
+      return;
     }
 
-    setLoading(true)
-    setError(null)
-    setIsTyping(true)
+    setLoading(true);
+    setError(null);
+    setIsTyping(true);
 
     // Add user message immediately
-    setChat((prevChat) => [...prevChat, { role: "user", content: question }])
+    setChat((prevChat) => [...prevChat, { role: "user", content: question }]);
 
     try {
       const response = await fetch("/api/chat", {
@@ -61,33 +61,36 @@ export default function PDFMultiFileChatBot() {
           id,
           question,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
       if (response.ok) {
         // Add bot message after response
-        setChat((prevChat) => [...prevChat, { role: "bot", content: data.answer }])
+        setChat((prevChat) => [
+          ...prevChat,
+          { role: "bot", content: data.answer },
+        ]);
       } else {
-        setError(data.error || "Failed to process the PDF.")
+        setError(data.error || "Failed to process the PDF.");
       }
     } catch (err: unknown) {
-      setError("An error occurred while contacting the server." + err)
+      setError("An error occurred while contacting the server." + err);
     } finally {
-      setQuestion("")
-      setLoading(false)
-      setIsTyping(false)
+      setQuestion("");
+      setLoading(false);
+      setIsTyping(false);
       // Focus the input after sending
       if (inputRef.current) {
-        inputRef.current.focus()
+        inputRef.current.focus();
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [chat, isTyping])
+  }, [chat, isTyping]);
 
   return (
     <div className="flex flex-col  bg-gradient-to-r from-blue-950 to-gray-900 p-4 md:p-8">
@@ -97,7 +100,9 @@ export default function PDFMultiFileChatBot() {
             <div className="p-2 bg-white/20 rounded-lg">
               <FileText className="h-6 w-6" />
             </div>
-            <CardTitle className="text-xl md:text-2xl font-bold py-5 flex align-middle justify-center">PDF Chat Assistant</CardTitle>
+            <CardTitle className="text-xl md:text-2xl font-bold py-5 flex align-middle justify-center">
+              PDF Chat Assistant
+            </CardTitle>
           </div>
         </CardHeader>
 
@@ -112,30 +117,44 @@ export default function PDFMultiFileChatBot() {
                   <Bot className="h-8 w-8 text-[#3b82f6]" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-white">Welcome to PDF Chat Assistant</h3>
-                  <p className="max-w-md mt-2">Ask questions about your PDF documents and get instant answers.</p>
+                  <h3 className="text-lg font-medium text-white">
+                    Welcome to PDF Chat Assistant
+                  </h3>
+                  <p className="max-w-md mt-2">
+                    Ask questions about your PDF documents and get instant
+                    answers.
+                  </p>
                 </div>
               </div>
             ) : (
               chat.map((message, index) => (
                 <div
                   key={index}
-                  className={cn("flex w-full", message.role === "user" ? "justify-end" : "justify-start")}
+                  className={cn(
+                    "flex w-full",
+                    message.role === "user" ? "justify-end" : "justify-start"
+                  )}
                 >
                   <div
                     className={cn(
                       "flex items-start gap-2 max-w-[80%]",
-                      message.role === "user" ? "flex-row-reverse" : "flex-row",
+                      message.role === "user" ? "flex-row-reverse" : "flex-row"
                     )}
                   >
                     <Avatar
                       className={cn(
                         "h-8 w-8 border-2",
-                        message.role === "user" ? "bg-[#3b82f6] border-violet-300" : "bg-[#2e7dfd] border-purple-300",
+                        message.role === "user"
+                          ? "bg-[#3b82f6] border-violet-300"
+                          : "bg-[#2e7dfd] border-purple-300"
                       )}
                     >
                       <AvatarFallback>
-                        {message.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                        {message.role === "user" ? (
+                          <User className="h-4 w-4" />
+                        ) : (
+                          <Bot className="h-4 w-4" />
+                        )}
                       </AvatarFallback>
                     </Avatar>
                     <div
@@ -143,7 +162,7 @@ export default function PDFMultiFileChatBot() {
                         "rounded-2xl px-4 py-3 text-sm md:text-base animate-fade-in",
                         message.role === "user"
                           ? "bg-[#2e7df6] text-white rounded-tr-none"
-                          : "bg-gray-700 text-white rounded-tl-none",
+                          : "bg-gray-700 text-white rounded-tl-none"
                       )}
                     >
                       {formatBoldText(message.content)}
@@ -180,7 +199,11 @@ export default function PDFMultiFileChatBot() {
             )}
           </div>
 
-          {error && <div className="px-4 py-2 bg-red-900/50 border-l-4 border-red-500 text-white text-sm">{error}</div>}
+          {error && (
+            <div className="px-4 py-2 bg-red-900/50 border-l-4 border-red-500 text-white text-sm">
+              {error}
+            </div>
+          )}
 
           <form
             onSubmit={handleSubmit}
@@ -196,8 +219,16 @@ export default function PDFMultiFileChatBot() {
                 className="flex-1 bg-gray-700 text-white border-gray-600 focus:border-[#5393fa] focus:ring-[#3b82f6] placeholder:text-gray-400"
                 disabled={loading}
               />
-              <Button type="submit" disabled={loading} className="bg-[#0a68ff] hover:bg-[#3b83f6] text-white">
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-[#0a68ff] hover:bg-[#3b83f6] text-white"
+              >
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
                 <span className="sr-only">Send message</span>
               </Button>
             </div>
@@ -205,5 +236,5 @@ export default function PDFMultiFileChatBot() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RPGQuiz from "@/components/RPGQuiz";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [questions, setQuestions] = useState([]);

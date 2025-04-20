@@ -861,6 +861,10 @@ function FailIcon({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
+
+function setBorderAnimation(arg0: (prev: any) => number) {
+  throw new Error("Function not implemented.");
+}
 // Add these styles to your global CSS or Tailwind config
 // .drop-shadow-glow-green {
 //   filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.7));

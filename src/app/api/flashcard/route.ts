@@ -1,7 +1,6 @@
-import { downloadImages } from "@/services/extractPDF";
+import { downloadImages, scanReceipts } from "@/services/extractPDF";
 import { flashcardPrompt } from "@/app/AI/prompt";
 import { NextRequest } from "next/server";
-import { scanReceipts } from "../summary/route";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 

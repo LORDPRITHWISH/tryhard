@@ -12,15 +12,7 @@ import {
 
 import { useRef, useState } from "react";
 
-export const FloatingDock = ({
-  items,
-  desktopClassName,
-  mobileClassName,
-}: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
-  desktopClassName?: string;
-  mobileClassName?: string;
-}) => {
+export const FloatingDock = ({ items, desktopClassName, mobileClassName }) => {
   return (
     <>
       <FloatingDockDesktop items={items} className={desktopClassName} />
@@ -29,13 +21,7 @@ export const FloatingDock = ({
   );
 };
 
-const FloatingDockMobile = ({
-  items,
-  className,
-}: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
-  className?: string;
-}) => {
+const FloatingDockMobile = ({ items, className }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className={cn("relative block md:hidden", className)}>
@@ -84,13 +70,7 @@ const FloatingDockMobile = ({
   );
 };
 
-const FloatingDockDesktop = ({
-  items,
-  className,
-}: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
-  className?: string;
-}) => {
+const FloatingDockDesktop = ({ items, className }) => {
   let mouseX = useMotionValue(Infinity);
   return (
     <motion.div
@@ -98,7 +78,7 @@ const FloatingDockDesktop = ({
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
         "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
-        className,
+        className
       )}
     >
       {items.map((item) => (
@@ -108,18 +88,8 @@ const FloatingDockDesktop = ({
   );
 };
 
-function IconContainer({
-  mouseX,
-  title,
-  icon,
-  href,
-}: {
-  mouseX: MotionValue;
-  title: string;
-  icon: React.ReactNode;
-  href: string;
-}) {
-  let ref = useRef<HTMLDivElement>(null);
+function IconContainer({ mouseX, title, icon, href }) {
+  let ref = useRef < HTMLDivElement > null;
 
   let distance = useTransform(mouseX, (val) => {
     let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -134,7 +104,7 @@ function IconContainer({
   let heightTransformIcon = useTransform(
     distance,
     [-150, 0, 150],
-    [20, 40, 20],
+    [20, 40, 20]
   );
 
   let width = useSpring(widthTransform, {

@@ -1,9 +1,8 @@
 // components/Card.tsx
-import { SpaceFact } from "../types";
-import { useEffect, useRef } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef } from "react";
 
 interface CardProps {
-  data: SpaceFact;
+  data: any;
   isBack?: boolean;
 }
 
@@ -49,11 +48,18 @@ export default function Card({ data, isBack = false }: CardProps) {
                   hover:shadow-[0_0_25px_rgba(114,90,193,0.8),0_0_40px_rgba(114,90,193,0.4)]
                   ${isBack ? "card-back" : "card-front"}`}
     >
-      <div className="symbol text-6xl mb-6 transform-gpu translate-z-30 opacity-0">{data.symbol}</div>
+      <div className="symbol text-6xl mb-6 transform-gpu translate-z-30 opacity-0">
+        {data.symbol}
+      </div>
       <div className="content w-full font-orbitron leading-relaxed text-base tracking-wider transform-gpu translate-z-20">
-        <h2 className="mb-3 text-[22px] text-[#a4fbff] uppercase opacity-0 transform translate-y-5">{data.title}</h2>
-        {data.facts.map((fact, i) => (
-          <p key={i} className="mb-2 text-[#e0e0ff] opacity-0 transform translate-y-4">
+        <h2 className="mb-3 text-[22px] text-[#a4fbff] uppercase opacity-0 transform translate-y-5">
+          {data.title}
+        </h2>
+        {data.facts.map((fact: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, i: Key | null | undefined) => (
+          <p
+            key={i}
+            className="mb-2 text-[#e0e0ff] opacity-0 transform translate-y-4"
+          >
             {fact}
           </p>
         ))}
