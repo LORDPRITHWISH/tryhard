@@ -14,7 +14,7 @@ export default function Home() {
           <HeroPage />
           <FeaturesSection />
           <TestimonialsSection />
-          <PricingPage />
+          {/* <PricingPage /> */}
         </div>
       </div>
 
