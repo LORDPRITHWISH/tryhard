@@ -12,7 +12,7 @@ export const summaryPrompt = `
     
     1. **Key Concepts and Definitions**: Write short paragraphs or expanded bullet points explaining important terms or concepts. Keep each point 1–3 sentences max.
     2. **Important Formulas**: List any formulas, equations, or expressions with a brief explanation or what it’s used for.
-    3. **Important Dates and Facts**: List significant dates, historical events, or factual data along with a short context/explanation.
+    3. **Important Facts**: List historical events, or factual data along with a short context/explanation.
     4. **Summarized Notes**: Provide a comprehensive summary of all key topics. Write it in well-structured bullet points or short paragraphs for better readability.
     5. **Memory Boost Tips** *(optional)*: Include mnemonic tricks, visual cues, or simple analogies to remember tough concepts — only if they make sense based on the content.
     
