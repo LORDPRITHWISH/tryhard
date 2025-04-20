@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Cloud, RefreshCw } from 'lucide-react';
-
+import { Image } from 'lucide-react';
 export default function TestimonialsSection() {
  // const [currentIndex, setCurrentIndex] = useState(0);
   
@@ -34,7 +34,7 @@ export default function TestimonialsSection() {
   return (
     <div className="bg-gradient-to-r from-black to-gray-900 text-white py-16 px-4 mb-0">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+        
         <div className="text-center mb-12">
           <div className="inline-block border border-gray-600 px-4 py-1 rounded-md mb-4">
             <span className="text-gray-400">Testimonials</span>
@@ -42,9 +42,9 @@ export default function TestimonialsSection() {
           <h2 className="text-5xl font-bold mb-10">What Our Users Say</h2>
         </div>
 
-        {/* Testimonials Grid */}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* First testimonial is always visible */}
+       
           <div className="bg-gray-900 rounded-xl p-6 relative">
             <div className="flex items-center mb-4">
               <div className="relative">
@@ -63,9 +63,9 @@ export default function TestimonialsSection() {
               </div>
             </div>
             
-            {/* Cat Image */}
+        
             <div className="mb-4">
-              <img 
+              <img
                 src="https://ik.imagekit.io/7b4kwmuj2/user1.jpg?updatedAt=1745098287128" 
                 alt="Orange cat looking up" 
                 className="w-full h-40 object-cover rounded-lg"
@@ -77,12 +77,12 @@ export default function TestimonialsSection() {
             </p>
           </div>
           
-          {/* Second testimonial column */}
+        
           <div className="flex flex-col gap-6">
             <div className="bg-gray-900 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <div className="relative">
-                  <img 
+                  <img
                     src="https://ik.imagekit.io/7b4kwmuj2/user1.jpg?updatedAt=1745098287128" 
                     alt="Anjela" 
                     className="w-12 h-12 rounded-full object-cover"
@@ -105,7 +105,7 @@ export default function TestimonialsSection() {
             <div className="bg-gray-900 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <div className="relative">
-                  <img 
+                  <img
                     src="https://ik.imagekit.io/7b4kwmuj2/user2.jpg?updatedAt=1745098594619" 
                     alt="Mark" 
                     className="w-12 h-12 rounded-full object-cover"

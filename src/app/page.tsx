@@ -4,14 +4,7 @@ import PricingPage from "@/components/Pricing";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import FintreeFooter from "@/components/FintreeFooter";
 import TestimonialsSection from "@/components/Testimonial";
-import {
-  IconBrandGithub,
-  IconBrandX,
-  IconExchange,
-  IconHome,
-  IconNewSection,
-} from "@tabler/icons-react";
-import { FloatingDock } from "@/components/ui/floating-dock";
+
 
 export default function Home() {
   return (

@@ -1,15 +1,17 @@
 "use client";
 import React, { useState, ReactNode } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
-// import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
+import {
+  IconBrandTabler,
+  IconUserBolt,
+  IconSettings,
+  IconNewSection,
+  IconChartBubble,
+  IconArrowLeft,
+} from "@tabler/icons-react";
+
 type Props = {
   children: ReactNode;
 };
@@ -36,7 +38,7 @@ export function DarkSidebar({ children }: Props) {
       label: "Chat",
       href: "/chat",
       icon: (
-        <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconNewSection className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />
       ),
     },
     {
@@ -62,20 +64,23 @@ export function DarkSidebar({ children }: Props) {
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} className="" />
               ))}
-              <div>
-                <SignedOut>
-                  <div className="flex w-full items-center justify-between ">
+
+              <SignedOut>
+                <div className="flex w-full items-center justify-between">
+                  <SignInButton />
+                  <div className="h-5 w-5 text-neutral-500 dark:text-neutral-300">
                     <SignInButton />
                   </div>
-                </SignedOut>
-                <SignedIn></SignedIn>
-              </div>
-              <div className="flex w-full items-center justify-between ">
-                <UserButton />
-              </div>
+                </div>
+              </SignedOut>
+
+              <SignedIn>
+                <div className="flex w-full items-center justify-between">
+                  <UserButton />
+                </div>
+              </SignedIn>
             </div>
           </div>
-          <div></div>
         </SidebarBody>
       </Sidebar>
 

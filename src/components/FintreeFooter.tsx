@@ -22,9 +22,7 @@ const FintreeFooter: React.FC = () => {
                 </p>
               </div>
               <p className="text-sm max-w-xs">
-                Learn from more than 100+ carefully selected videos of
-                companies that create engaging, shareable videos that not
-                only boost brand awareness but also convert customers.
+              Learn from over 100+ expertly analyzed study materials and presentations—crafted to help you revise smarter, grasp key concepts faster, and stay exam-ready. Our AI transforms your content into summaries, quizzes, and study plans that actually help you succeed.
               </p>
               <div className="flex items-center mt-4 bg-black bg-opacity-40 p-3 rounded-md w-fit">
                

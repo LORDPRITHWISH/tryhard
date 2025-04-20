@@ -48,7 +48,7 @@ export default function PDFMultiFileChatBot() {
     setError(null);
     setIsTyping(true);
 
-    // Add user message immediately
+ 
     setChat((prevChat) => [...prevChat, { role: "user", content: question }]);
 
     try {
@@ -65,7 +65,6 @@ export default function PDFMultiFileChatBot() {
 
       const data = await response.json();
       if (response.ok) {
-        // Add bot message after response
         setChat((prevChat) => [
           ...prevChat,
           { role: "bot", content: data.answer },
@@ -79,7 +78,6 @@ export default function PDFMultiFileChatBot() {
       setQuestion("");
       setLoading(false);
       setIsTyping(false);
-      // Focus the input after sending
       if (inputRef.current) {
         inputRef.current.focus();
       }
