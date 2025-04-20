@@ -8,7 +8,9 @@ import { motion } from "framer-motion";
 export default function Home() {
   const [questions, setQuestions] = useState([]);
   const [Loading, setLoading] = useState(true);
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number }>>([]);
+  const [stars, setStars] = useState<
+    Array<{ x: number; y: number; size: number }>
+  >([]);
 
   useEffect(() => {
     const newStars = Array.from({ length: 100 }, () => ({
@@ -40,6 +42,7 @@ export default function Home() {
         setQuestions(res.data.QNA);
       } catch (err) {
         console.error("Failed to fetch questions", err);
+        setLoading(false);
       }
     };
 
@@ -61,7 +64,9 @@ export default function Home() {
                 left: `${star.x}%`,
                 top: `${star.y}%`,
                 opacity: Math.random() * 0.7 + 0.3,
-                boxShadow: `0 0 ${star.size * 2}px ${star.size / 2}px rgba(255,255,255,0.8)`,
+                boxShadow: `0 0 ${star.size * 2}px ${
+                  star.size / 2
+                }px rgba(255,255,255,0.8)`,
               }}
               animate={{
                 opacity: [0.3, 0.8, 0.3],

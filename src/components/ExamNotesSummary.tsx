@@ -1,5 +1,5 @@
 "use client";
-// components/ConceptNotesSummary.tsx
+
 import React, { useState } from "react";
 import {
   ChevronDown,
@@ -12,7 +12,7 @@ import {
   Atom,
 } from "lucide-react";
 
-// Define our data types
+
 type Concept = {
   concept: string;
   explanation: string;
@@ -33,12 +33,11 @@ type ConceptsData = {
   };
 };
 
-// Component props
 interface ExamNotesSummaryProps {
   data: ConceptsData;
 }
 
-// Get icon for topic
+
 const getTopicIcon = (topic: string) => {
   switch (topic) {
     case "Biology":
@@ -54,7 +53,7 @@ const getTopicIcon = (topic: string) => {
   }
 };
 
-// Individual concept card component
+
 const ConceptCard: React.FC<{ concept: Concept }> = ({ concept }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -80,7 +79,7 @@ const ConceptCard: React.FC<{ concept: Concept }> = ({ concept }) => {
   );
 };
 
-// Topic section component
+
 const TopicSection: React.FC<{ section: TopicSection }> = ({ section }) => {
   const [isOpen, setIsOpen] = useState(true);
   const icon = getTopicIcon(section.topic);
@@ -112,7 +111,7 @@ const TopicSection: React.FC<{ section: TopicSection }> = ({ section }) => {
   );
 };
 
-// Main component
+
 const ExamNotesSummary: React.FC = ({ data }: any) => {
   const [isOverviewOpen, setIsOverviewOpen] = useState(true);
   const topics = data.summary["Key Concepts and Definitions"];
@@ -128,7 +127,7 @@ const ExamNotesSummary: React.FC = ({ data }: any) => {
         </div>
       </div>
 
-      {/* Overview Section */}
+  
       <div className="border border-gray-700 rounded-lg mb-6 overflow-hidden shadow-md">
         <div
           className="bg-blue-800 p-4 font-medium flex justify-between items-center cursor-pointer"
@@ -155,7 +154,7 @@ const ExamNotesSummary: React.FC = ({ data }: any) => {
         )}
       </div>
 
-      {/* Subject Topics */}
+     
       <h2 className="text-xl font-bold mb-4 text-blue-300 flex items-center gap-2">
         <BookOpen size={20} className="text-blue-400" />
         <span>Key Concepts by Subject</span>

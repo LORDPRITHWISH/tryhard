@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import {ClerkProvider} from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 import { ThemeProvider } from "next-themes";
 import { DarkSidebar } from "@/components/DarkSidebar";
@@ -29,15 +29,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          
-          <DarkSidebar>{children}</DarkSidebar>
-        </ThemeProvider>
-        <Toaster />
-      </body>
-    </html>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+           
+            {children}
+          </ThemeProvider>
+          <Toaster />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

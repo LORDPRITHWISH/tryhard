@@ -11,9 +11,11 @@ export async function POST(req: NextRequest) {
       { status: 401 }
     );
   }
+  console.log(userId);
 
   const formData = await req.formData();
   const file = formData.get("file") as File;
+  const worldName = formData.get("worldName") as String;
 
   if (!file) {
     return NextResponse.json({ error: "No file received." }, { status: 400 });
@@ -33,12 +35,13 @@ export async function POST(req: NextRequest) {
     }
     const document = await prisma.documents.create({
       data: {
+        worldName: worldName as string,
         pdfUrl: uploadToCloudinary.url,
         publicId: uploadToCloudinary.public_id,
         pageCount: uploadToCloudinary.pages as number,
         User: {
           connect: {
-            userId: userId,
+            userId,
           },
         },
       },

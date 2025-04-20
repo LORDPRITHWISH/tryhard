@@ -1,10 +1,43 @@
-import React from 'react'
+"use client";
+import React from "react";
 
-import Button from '@/components/ui/getBtn'
+import Button from "@/components/ui/getBtn";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUp,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
+import { ShimmerButton } from "./magicui/shimmer-button";
+import Link from "next/link";
 const HeroPage = () => {
+  const { user } = useUser();
   return (
     <div>
-        <section className="max-w-4xl mx-auto mt-16 text-center px-4 min-h-xl">
+      <header className="text-gray-600 body-font">
+        <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center"></nav>
+          <div className="flex space-x-4">
+            {!user ? (
+              <>
+                <SignInButton>
+                  <ShimmerButton className="shadow-2xl">
+                    <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
+                      Sign In
+                    </span>
+                  </ShimmerButton>
+                </SignInButton>
+              </>
+            ) : (
+              <UserButton />
+            )}
+          </div>
+        </div>
+      </header>
+      <section className="max-w-4xl mx-auto mt-16 text-center px-4 min-h-xl">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight text-blue-100">
           Optimize
           <span className="inline-flex items-center justify-center mx-2">
@@ -54,7 +87,7 @@ const HeroPage = () => {
           </span>
           processes, and
           <br />
-          boost study 
+          boost study
           <span className="inline-flex items-center justify-center mx-2">
             <span className="relative">
               <span className="bg-[#3b82f6] w-12 h-12 rounded-full flex items-center justify-center">
@@ -83,12 +116,20 @@ const HeroPage = () => {
 
         <div className="mt-10 p-7">
           <div className=" text-white px-12 py-3 rounded-full font-xl inline-block">
-           <Button/>
+            {!user ? (
+              <SignInButton>
+                <Button />
+              </SignInButton>
+            ) : (
+              <Link href="/home">
+                <Button />{" "}
+              </Link>
+            )}
           </div>
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default HeroPage
+export default HeroPage;

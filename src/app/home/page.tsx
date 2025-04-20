@@ -5,11 +5,14 @@ import CircularGallery from "@/components/CircularGallery";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function HomePage() {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [worldName, setWorldName] = useState<string>("");
 
   const handleFileUpload = async () => {
     if (!file) {
@@ -18,6 +21,7 @@ export default function HomePage() {
     }
 
     const formData = new FormData();
+    formData.append("worldName", worldName);
     formData.append("file", file);
 
     try {
@@ -29,13 +33,13 @@ export default function HomePage() {
         withCredentials: true,
       });
       console.log(" Uploaded:", upload.data);
-      toast("Upload successful!");
+      toast.success("Upload successful!");
       setTimeout(() => {
-        router.push(`/world/${upload.data.data.id}`);
+        router.push(`/onboarding/${upload.data.data.id}`);
       }, 2000);
     } catch (error) {
       console.error("Upload failed:", error);
-      toast("Upload failed!");
+      toast.error("Upload failed!");
     } finally {
       setUploading(false);
     }
@@ -82,12 +86,23 @@ export default function HomePage() {
           items={items}
         />
       </div>
-      <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-4 items-center justify-center">
+
+      <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg p-4 flex flex-col gap-4 py-4">
+        <div>
+          <Label htmlFor="worldName">World Name</Label>
+        </div>
+        <Input
+          id="worldName"
+          value={worldName}
+          onChange={(e) => setWorldName(e.target.value)}
+          placeholder="Enter world name"
+          className="mb-4"
+        />
         <FileUpload onChange={(files: File[]) => setFile(files[0] || null)} />
         <button
           onClick={handleFileUpload}
           disabled={!file || uploading}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-500"
+          className="px-4 py-2 bg-blue-600 text-white rounded rounded-xl hover:bg-blue-700 disabled:bg-gray-500"
         >
           {uploading ? "Uploading..." : "Upload PDF"}
         </button>

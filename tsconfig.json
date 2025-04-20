@@ -24,6 +24,6 @@
     "baseUrl": ".",
     
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/upload/route.ts", "src/app/(auth)/layout.js", "src/components/ui/floating-dock.jsx", "src/app/summary/[id]/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/upload/route.ts", "src/app/(auth)/layout.js", "src/components/ui/floating-dock.jsx", "src/app/summary/[id]/page.jsx", "src/app/(main)/layout.ts"],
   "exclude": ["node_modules"]
 }

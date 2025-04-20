@@ -12,23 +12,23 @@ export default function CardScene({ data }: any) {
   const flipIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateHiddenCard = () => {
-    // Logic handled through React state and rendering
+   
   };
 
   const flipCard = () => {
     if (isAnimating) return;
     setIsAnimating(true);
 
-    // After flip animation completes
+   
     setTimeout(() => {
-      // Update card indices
+     
       setCurrentCardIndex(nextCardIndex);
       setNextCardIndex((nextCardIndex + 1) % data.length);
 
-      // Toggle flip state
+     
       setIsFlipped(!isFlipped);
       setIsAnimating(false);
-    }, 1500); // Match transition duration
+    }, 1500); 
   };
 
   const handleIndicatorClick = (targetIndex: number) => {
@@ -45,12 +45,12 @@ export default function CardScene({ data }: any) {
   };
 
   const startAutoFlip = () => {
-    // Clear any existing interval
+    
     if (flipIntervalRef.current) {
       clearInterval(flipIntervalRef.current);
     }
 
-    // Random interval between 5-7 seconds
+   
     const randomInterval = Math.floor(Math.random() * 2000) + 5000;
 
     flipIntervalRef.current = setInterval(() => {

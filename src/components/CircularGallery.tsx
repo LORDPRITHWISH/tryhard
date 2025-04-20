@@ -334,7 +334,7 @@ class Media {
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
 
-    // Smoothly animate hover state
+
     const targetHover = this.isHovered ? 1.0 : 0.0;
     this.program.uniforms.uHover.value += (targetHover - this.program.uniforms.uHover.value) * 0.1;
 
@@ -352,13 +352,13 @@ class Media {
     }
   }
 
-  // Check if this media item contains the screen point
+ 
   checkHover(point: { x: number; y: number }): boolean {
-    // Convert screen space point to normalized device coordinates (-1 to 1)
+    
     const ndcX = (point.x / this.screen.width) * 2 - 1;
     const ndcY = -((point.y / this.screen.height) * 2 - 1);
 
-    // Simple plane intersection test (without rotation, just a box test)
+  
     const halfWidth = this.plane.scale.x / 2;
     const halfHeight = this.plane.scale.y / 2;
 
@@ -512,7 +512,7 @@ class App {
     this.scroll.position = this.scroll.current;
     this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
 
-    // Store the initial position to determine if this should count as a click
+    
     this.lastMousePosition.x = "touches" in e ? e.touches[0].clientX : e.clientX;
     this.lastMousePosition.y = "touches" in e ? e.touches[0].clientY : e.clientY;
   }
@@ -543,15 +543,15 @@ class App {
   }
 
   onMouseMove(e: MouseEvent) {
-    // Get normalized device coordinates
+   
     const rect = this.container.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Reset all hover states
+    
     let hoveredFound = false;
     this.medias.forEach((media) => {
-      // Check each media for hover
+    
       const isHovered = media.checkHover({ x, y });
       media.isHovered = isHovered;
 
@@ -559,28 +559,26 @@ class App {
         hoveredFound = true;
         this.hoveredIndex = media.index;
 
-        // Change cursor to pointer when hovering over an item
         this.container.style.cursor = media.link ? "pointer" : "grab";
       }
     });
 
-    // Reset cursor if no item is hovered
+   
     if (!hoveredFound) {
       this.hoveredIndex = -1;
       this.container.style.cursor = "grab";
     }
 
-    // Store current position for click handling
     this.lastMousePosition.x = e.clientX;
     this.lastMousePosition.y = e.clientY;
   }
 
   onClick(e: MouseEvent) {
-    // Only handle clicks if we weren't dragging
+  
     const dragDistance = Math.abs(this.lastMousePosition.x - e.clientX) + Math.abs(this.lastMousePosition.y - e.clientY);
 
     if (dragDistance < 5 && this.hoveredIndex !== -1) {
-      // Find the actual media item (accounting for repeated items)
+      
       const actualIndex = this.hoveredIndex % (this.medias.length / 2);
       const media = this.medias[this.hoveredIndex];
 
@@ -640,7 +638,7 @@ class App {
     window.addEventListener("touchmove", this.boundOnTouchMove);
     window.addEventListener("touchend", this.boundOnTouchUp);
 
-    // Add new event listeners for hover and click
+   
     this.container.addEventListener("mousemove", this.boundOnMouseMove);
     this.container.addEventListener("click", this.boundOnClick);
   }
@@ -657,7 +655,7 @@ class App {
     window.removeEventListener("touchmove", this.boundOnTouchMove);
     window.removeEventListener("touchend", this.boundOnTouchUp);
 
-    // Remove new event listeners
+   
     this.container.removeEventListener("mousemove", this.boundOnMouseMove);
     this.container.removeEventListener("click", this.boundOnClick);
 

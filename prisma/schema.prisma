@@ -27,6 +27,7 @@ model User {
 
 model documents {
   id            String   @id @default(cuid())
+  worldName     String
   userId        String
   pdfUrl        String
   pageCount     Int

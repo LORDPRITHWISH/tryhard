@@ -1,4 +1,4 @@
-// components/Card.tsx
+
 import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef } from "react";
 
 interface CardProps {
