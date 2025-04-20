@@ -1,4 +1,4 @@
-# Welcome to StudyGenie – Your AI-Powered Smart Study Companion
+# Welcome to Tryhard – Your AI-Powered Smart Study Companion
 Tryhard helps students with limited time to optimize learning, summarize content, and stay exam-ready using cutting-edge AI. Just upload a PDF, and let Tryhard create summaries, revision guides,
 
 ![Tech Stack](https://img.shields.io/badge/Next.js-15-blue.svg) ![Clerk](https://img.shields.io/badge/Auth-Clerk-orange) ![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-lightblue) ![Tailwind](https://img.shields.io/badge/Styled%20With-TailwindCSS-38bdf8)
