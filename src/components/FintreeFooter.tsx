@@ -1,83 +1,59 @@
+'use client';
 
-import { TextHoverEffect } from '@/components/TextHoverEffect'
 import React from 'react';
-// import { Heart, } from 'lucide-react';
+import { TextHoverEffect } from '@/components/TextHoverEffect';
 
 const FintreeFooter: React.FC = () => {
   return (
-    <footer className="bg-gradient-to-r from-black to-gray-900 text-gray-300 py-8 px-0.1  inset-0 flex ">
+    <footer className="bg-gradient-to-r from-black to-gray-900 text-gray-300 px-4 py-10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-      
-          <div className="col-span-1 lg:col-span-1">
-            <div className="flex flex-col space-y-4">
-              <div>
-                <h2 className="text-xl font-bold text-white">
-                  Product Video
-                </h2>
-                <p className="text-xl font-bold flex items-center">
-                  <span className="text-[#ff5757]"></span>
-                  <span className="text-white">tryhard</span>
-                  <span className="text-[#f06262]">.tech</span>
-                </p>
-              </div>
-              <p className="text-sm max-w-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+          {/* Brand Section */}
+          <div>
+            <h2 className="text-2xl font-semibold text-white mb-2">Product Video</h2>
+            {/* <p className="text-xl font-bold mb-2">
+              <span className="text-[#ff5757]">tryhard</span>
+              <span className="text-white">.tech</span>
+            </p> */}
+            <p className="text-sm text-gray-400 max-w-sm">
               Learn from over 100+ expertly analyzed study materials and presentations—crafted to help you revise smarter, grasp key concepts faster, and stay exam-ready. Our AI transforms your content into summaries, quizzes, and study plans that actually help you succeed.
-              </p>
-              <div className="flex items-center mt-4 bg-black bg-opacity-40 p-3 rounded-md w-fit">
-               
-              </div>
-            </div>
+            </p>
           </div>
 
-         
-          <div className="col-span-1">
-            <h3 className="text-white font-medium mb-4">Company</h3>
-            <nav className="flex flex-col space-y-2">
-              <a href="#features" className="hover:text-white transition duration-200">
-                Features
-              </a>
-              <a href="#pricing" className="hover:text-white transition duration-200">
-                Pricing
-              </a>
-              <a href="#terms" className="hover:text-white transition duration-200">
-                Terms
-              </a>
-              <a href="#privacy" className="hover:text-white transition duration-200">
-                Privacy
-              </a>
+          {/* Company Links */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">Company</h3>
+            <nav className="flex flex-col space-y-2 text-sm">
+              <a href="#features" className="hover:text-white transition">Features</a>
+              <a href="#pricing" className="hover:text-white transition">Pricing</a>
+              <a href="#terms" className="hover:text-white transition">Terms</a>
+              <a href="#privacy" className="hover:text-white transition">Privacy</a>
             </nav>
           </div>
 
-        
-          <div className="col-span-1">
-            <h3 className="text-white font-medium mb-4">Support</h3>
-            <nav className="flex flex-col space-y-2">
-              <a href="#contact" className="hover:text-white transition duration-200">
-                Contact Us
-              </a>
+          {/* Support */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">Support</h3>
+            <nav className="flex flex-col space-y-2 text-sm">
+              <a href="#contact" className="hover:text-white transition">Contact Us</a>
             </nav>
           </div>
 
-       
-          <div className="col-span-1">
-            <h3 className="text-white font-medium mb-4">About</h3>
-            <div className="flex items-center">
-              <a 
-                href="#maker" 
-                className="hover:text-white transition duration-200 flex items-center"
-              >
-                Made by &#10084;Team Zenux
-                
-              </a>
-            </div>
+          {/* About */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">About</h3>
+            <p className="text-sm">
+              Made with <span className="text-red-500">&hearts;</span> by <a href="#maker" className="hover:text-white font-medium">Team Zenux</a>
+            </p>
           </div>
         </div>
 
-        <div className="pt-0.001 border-t border-gray-800">
-        <div className="h-[30rem] flex items-center justify-center mb-1 ">
-            <TextHoverEffect text="Zenux" m-0 />
-        </div>
+        {/* Text Hover Effect / Branding */}
+        <div className="border-t border-gray-800 pt-6">
+          <div className="h-32 flex items-center justify-center">
+            <TextHoverEffect text="Zenux" />
+          </div>
         </div>
       </div>
     </footer>
