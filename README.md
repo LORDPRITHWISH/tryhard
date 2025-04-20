@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Welcome to StudyGenie – Your AI-Powered Smart Study Companion
+StudyGenie helps students with limited time to optimize learning, summarize content, and stay exam-ready using cutting-edge AI. Just upload a PDF, and let StudyGenie create summaries, revision guides, study plans, quizzes, and more — personalized for your learning needs.
 
-## Getting Started
+![Tech Stack](https://img.shields.io/badge/Next.js-15-blue.svg) ![Clerk](https://img.shields.io/badge/Auth-Clerk-orange) ![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-lightblue) ![Tailwind](https://img.shields.io/badge/Styled%20With-TailwindCSS-38bdf8)
 
-First, run the development server:
+## 🚀 Features
+📤 Smart Upload – Upload PDF/PPT files to auto-generate notes
+
+🧠 AI Summarization – Gemini-powered extraction of key points and summaries
+
+📅 Study Plans – Personalized revision guides and study plans
+
+❓ Quiz Generator – Auto-created MCQs to test your understanding
+
+🧾 Points & Scoring – Earn points for solving quizzes and studying
+
+🤖 Subject-Specific AI Agents – Dedicated AI tutors for topics like CN, DBMS, etc.
+
+🧠 Agent Gallery – Choose your assistant based on the subject you're struggling with
+
+🎮 Gamified Learning – Track progress and boost your study streaks
+
+---
+
+## 🧠 Powered By
+
+| Technology      | Role |
+|------------------|------|
+| **Next.js 15**       | Frontend & Backend Framework |
+| **React 19 (RC)**     | UI Development |
+| **Tailwind CSS**      | Styling |
+| **Prisma** *(optional)* | ORM Layer |
+| **Clerk**             | Authentication & Session Management |
+| **Google Gemini API** | AI-Powered Chat & Advisor |
+| **Resend + React Email** | Transactional Emails |
+| **Framer Motion**     | Animations |
+| **Radix UI**          | Headless UI Components |
+
+---
+## 🛠️ Getting Started
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/studygenie.git
+cd studygenie
+```
+## 2. Install dependencies
+```bash
+
+npm install
+```
+## 3. Set up environment variables
+Create a .env.local file and add:
+```bash
+DATABASE_URL=""
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+GEMINI_API_KEY=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 4. Run the development server
+```bash
+npm run dev
+```
+## 🌐 Live Demo
+https://tryhard-mo19.vercel.app/
+### 📚 Documentation
+- Clerk Docs: https://clerk.com/docs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Gemini AI Docs: https://ai.google.dev/
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Prisma: https://www.prisma.io/docs
 
-## Learn More
+- Tailwind: https://tailwindcss.com/docs
+- Vercel ai sdk: https://sdk.vercel.ai/docs/introduction
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🙌 Acknowledgments
+-Next.js (next) 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-React 19 (react, react-dom) 
 
-## Deploy on Vercel
+-Tailwind CSS (tailwindcss, tailwindcss-animate, tw-animate-css) 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-Clerk (@clerk/nextjs) 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-Google Gemini AI (@google/generative-ai) 
+
+-Prisma (@prisma/client) 
+
+-Framer Motion (framer-motion) 
+
+-LangChain (langchain, @langchain/*) 
+
+-Zod (zod) 
+
+-Cloudinary (cloudinary, next-cloudinary, @cloudinary/react) 
+
+- Vercel AI SDK (ai, @ai-sdk/*) 
