@@ -37,10 +37,7 @@ export async function scanReceipts(files: string[], prompt: string) {
     // Filter out any nulls
     const validImageParts = imageParts.filter((part) => part !== null);
 
-    const result = await model.generateContent([
-      ...validImageParts,
-      { text: prompt },
-    ]);
+    const result = await model.generateContent([...validImageParts, { text: prompt }]);
 
     const response = await result.response;
     const text = response.text();
@@ -96,9 +93,7 @@ export async function POST(req: NextRequest) {
       const imagepaths = [];
 
       for (let i = 1; i <= docs[0].pageCount; i++) {
-        imagepaths.push(
-          `https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`
-        );
+        imagepaths.push(`https://res.cloudinary.com/dom61f3n8/image/upload/pg_${i}/v1745048591/${publicId}.jpg`);
       }
 
       const images = await downloadImages(imagepaths);
