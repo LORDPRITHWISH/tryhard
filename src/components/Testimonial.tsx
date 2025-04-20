@@ -34,7 +34,7 @@ export default function TestimonialsSection() {
   return (
     <div className="bg-gradient-to-r from-black to-gray-900 text-white py-16 px-4 mb-0">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+        
         <div className="text-center mb-12">
           <div className="inline-block border border-gray-600 px-4 py-1 rounded-md mb-4">
             <span className="text-gray-400">Testimonials</span>
@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
           <div className="bg-gray-900 rounded-xl p-6 relative">
             <div className="flex items-center mb-4">
               <div className="relative">
-                <Image 
+                <img 
                   src="https://ik.imagekit.io/7b4kwmuj2/user3.avif?updatedAt=1745098065882" 
                   alt="Sophia" 
                   className="w-12 h-12 rounded-full object-cover"
@@ -65,7 +65,7 @@ export default function TestimonialsSection() {
             
         
             <div className="mb-4">
-              <Image
+              <img
                 src="https://ik.imagekit.io/7b4kwmuj2/user1.jpg?updatedAt=1745098287128" 
                 alt="Orange cat looking up" 
                 className="w-full h-40 object-cover rounded-lg"
@@ -82,7 +82,7 @@ export default function TestimonialsSection() {
             <div className="bg-gray-900 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <div className="relative">
-                  <Image
+                  <img
                     src="https://ik.imagekit.io/7b4kwmuj2/user1.jpg?updatedAt=1745098287128" 
                     alt="Anjela" 
                     className="w-12 h-12 rounded-full object-cover"
@@ -105,7 +105,7 @@ export default function TestimonialsSection() {
             <div className="bg-gray-900 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <div className="relative">
-                  <Image
+                  <img
                     src="https://ik.imagekit.io/7b4kwmuj2/user2.jpg?updatedAt=1745098594619" 
                     alt="Mark" 
                     className="w-12 h-12 rounded-full object-cover"
