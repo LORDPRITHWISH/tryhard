@@ -1,47 +1,58 @@
-export const summaryPrompt = `
-You are an expert study assistant for a Linux-based power user. The following images contain handwritten or typed notes intended for exam prep.
+export const summaryPrompt = `You are an expert study assistant for a Linux-based power user. The following images contain handwritten or typed notes intended for exam prep.
 
 Your task is to analyze all image content and generate a single compact yet complete revision guide for quick, high-retention review.
 
 Output Instructions:
 - Deliver the output as a valid JSON only. No extra text.
-- Organize it using the structure below.
-- Don't oversimplify — clarity is king, but explain just enough so the reader doesn’t need the original notes.
-- Use short bullet points or tight paragraphs that are dense, readable, and informative.
+- Follow the format below **strictly**. Do not add or remove any fields.
+- For "Key Concepts and Definitions", follow the structure: 
+  {
+    "topic": String,
+    "keys": [
+      {
+        "concept": String,
+        "explanation": String
+      }
+    ]
+  }
+- Do not skip or simplify structure. Stick to the hierarchy exactly.
+- Keep language concise but complete — explain enough so that the reader doesn't need the original note.
+- Use short bullet points or paragraphs that are clear, readable, and informative.
 
 Output JSON Format:
 
 \`\`\`json
 {
   "Key Concepts and Definitions": [
-    // Short paragraphs (1–3 sentences) per concept.
-    // Explain what it is, how it works, why it matters.
-    // Add examples where useful. Clarity > Jargon.
+    {
+      "topic": "Your Topic",
+      "keys": [
+        {
+          "concept": "Term or Concept",
+          "explanation": "Clear and concise explanation (1–3 sentences). Include what it is, how it works, and why it matters."
+        }
+      ]
+    }
   ],
   "formulas": [
-    // "Formula — Brief purpose/use case",
-    // e.g., "F = ma — Newton’s 2nd law, relates force to mass and acceleration"
+    "Formula — Brief purpose/use case",
+    "e.g., F = ma — Newton’s 2nd law, relates force to mass and acceleration"
   ],
   "datesAndFacts": [
-    // "Fact — Quick explanation or context"
+    "Fact — Quick explanation or context"
   ],
   "summary": [
-    // Key topic breakdown in logical order.
-    // Bullet points or short para blocks covering all major ideas.
+    "Bullet points or short paragraphs summarizing all major topics covered"
   ],
   "memoryTips": [
-    // Mnemonics, analogies, visual cues — only if it adds real value.
+    "Mnemonics, analogies, or visual cues — only if useful"
   ]
 }
 \`\`\`
 
 If any section has no content, return it as an empty array [].
 
-do not generate any extra text, just the JSON.
-
-Your goal: fast, efficient, complete recall.
-
-
+Your goal: fast, efficient, complete recall. No filler. No fluff.
 `;
 
 export const flashcardPrompt = `

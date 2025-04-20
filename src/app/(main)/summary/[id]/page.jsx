@@ -26,8 +26,9 @@ export default function ConceptNotesPage() {
           withCredentials: true,
         });
 
-        console.log("data is ", res.data);
-        setconceptsData(res.data);
+
+        console.log("data is ", res.data.summary);
+        setconceptsData(res.data.summary);
         setLoading(false);
       } catch (err) {
         console.error("Failed to fetch Summary", err);
@@ -47,7 +48,7 @@ export default function ConceptNotesPage() {
         conceptsData &&
         conceptsData.summary.length > 0 && (
           <main className="container mx-auto py-8 px-4">
-            <ExamNotesSummary data={conceptsData.summary} />
+            <ExamNotesSummary data={conceptsData} />
           </main>
         )
       )}

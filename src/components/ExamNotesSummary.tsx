@@ -102,7 +102,7 @@ const TopicSection: React.FC<{ section: TopicSection }> = ({ section }) => {
       </div>
       {isOpen && (
         <div className="p-4 bg-gray-900">
-          {section.keys.map((concept, idx) => (
+          {section.keys && section.keys.map((concept, idx) => (
             <ConceptCard key={idx} concept={concept} />
           ))}
         </div>
@@ -114,55 +114,43 @@ const TopicSection: React.FC<{ section: TopicSection }> = ({ section }) => {
 
 const ExamNotesSummary: React.FC = ({ data }: any) => {
   const [isOverviewOpen, setIsOverviewOpen] = useState(true);
-  const topics = data.summary["Key Concepts and Definitions"];
+  const topics = data["Key Concepts and Definitions"];
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-gray-950 text-gray-200">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-blue-300">
-          🌌 Course Concepts Explorer
-        </h1>
-        <div className="text-sm bg-blue-900 text-blue-200 px-3 py-1 rounded-full">
-          JIS University
-        </div>
+      <h1 className="text-2xl font-bold text-blue-300">🌌 Course Concepts Explorer</h1>
+      <div className="text-sm bg-blue-900 text-blue-200 px-3 py-1 rounded-full">JIS University</div>
       </div>
 
-  
       <div className="border border-gray-700 rounded-lg mb-6 overflow-hidden shadow-md">
-        <div
-          className="bg-blue-800 p-4 font-medium flex justify-between items-center cursor-pointer"
-          onClick={() => setIsOverviewOpen(!isOverviewOpen)}
-        >
-          <div className="flex items-center gap-2">
-            <Lightbulb size={18} className="text-yellow-300" />
-            <h2 className="text-blue-100">Overview</h2>
-          </div>
-          {isOverviewOpen ? (
-            <ChevronUp size={20} className="text-blue-300" />
-          ) : (
-            <ChevronDown size={20} className="text-blue-300" />
-          )}
+      <div className="bg-blue-800 p-4 font-medium flex justify-between items-center cursor-pointer" onClick={() => setIsOverviewOpen(!isOverviewOpen)}>
+        <div className="flex items-center gap-2">
+        <Lightbulb size={18} className="text-yellow-300" />
+        <h2 className="text-blue-100">Overview</h2>
         </div>
-        {isOverviewOpen && (
-          <div className="p-4 bg-gray-900 bg-opacity-50">
-            <ul className="list-disc pl-5 space-y-2 text-gray-300">
-              {data.summary.summary.map((item: any, idx: any) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {isOverviewOpen ? <ChevronUp size={20} className="text-blue-300" /> : <ChevronDown size={20} className="text-blue-300" />}
+      </div>
+      {isOverviewOpen && (
+        <div className="p-4 bg-gray-900 bg-opacity-50">
+        <ul className="list-disc pl-5 space-y-2 text-gray-300">
+          {data.summary.map((item: string, idx: number) => (
+          <li key={idx}>{item}</li>
+          ))}
+        </ul>
+        </div>
+      )}
       </div>
 
-     
       <h2 className="text-xl font-bold mb-4 text-blue-300 flex items-center gap-2">
-        <BookOpen size={20} className="text-blue-400" />
-        <span>Key Concepts by Subject</span>
+      <BookOpen size={20} className="text-blue-400" />
+      <span>Key Concepts by Subject</span>
       </h2>
 
-      {topics.map((section: any, idx: any) => (
-        <TopicSection key={idx} section={section} />
-      ))}
+      {topics.map((section: any, idx: any) => {
+      console.log(section); // Print section
+      return <TopicSection key={idx} section={section} />;
+      })}
     </div>
   );
 };
