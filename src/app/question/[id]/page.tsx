@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RPGQuiz from "@/components/RPGQuiz";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [questions, setQuestions] = useState([]);
@@ -48,7 +49,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans">
       <div className="App">
-        {/* Static Star Background with twinkling animation */}
+       
         <div className="absolute inset-0 overflow-hidden">
           {stars.map((star, i) => (
             <motion.div

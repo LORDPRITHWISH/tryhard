@@ -1,5 +1,4 @@
-import { downloadImages } from "@/services/extractPDF";
-import { scanReceipts } from "../summary/route";
+import { downloadImages, scanReceipts } from "@/services/extractPDF";
 import { QNAPrompt } from "@/app/AI/prompt";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";

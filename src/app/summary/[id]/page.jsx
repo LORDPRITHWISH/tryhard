@@ -5,24 +5,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 
-// Define the TopicSection type
-type TopicSection = {
-  title: string;
-  content: string;
-};
-
-type ConceptsData = {
-  summary: {
-    "Key Concepts and Definitions": TopicSection[];
-    formulas?: { formula: string; description: string }[];
-    datesAndFacts?: { date: string; fact: string }[];
-    summary: string[];
-    memoryTips?: { tip: string; description: string }[];
-  };
-};
-
 export default function ConceptNotesPage() {
-  const [conceptsData, setconceptsData] = useState<ConceptsData | null>(null);
+  
+  const [conceptsData, setconceptsData] = useState(null);
   const [Loading, setLoading] = useState(true);
 
   const { id } = useParams();

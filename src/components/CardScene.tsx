@@ -1,13 +1,8 @@
 // components/CardScene.tsx
 import { useState, useEffect, useRef } from "react";
 import Card from "./Card";
-import { SpaceFact } from "../types";
 
-interface CardSceneProps {
-  data: SpaceFact[];
-}
-
-export default function CardScene({ data }: CardSceneProps) {
+export default function CardScene({ data }: any) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [nextCardIndex, setNextCardIndex] = useState(1);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -90,11 +85,15 @@ export default function CardScene({ data }: CardSceneProps) {
       </div>
 
       <div className="card-indicator absolute bottom-[-40px] left-0 w-full flex justify-center gap-2.5">
-        {data.map((_, i) => (
+        {data.map((_: any, i: any) => (
           <div
             key={i}
             className={`indicator w-3 h-3 rounded-full 
-                       ${i === currentCardIndex ? "bg-[rgba(131,238,255,0.8)] transform scale-[1.3] shadow-[0_0_8px_rgba(131,238,255,0.6)]" : "bg-[rgba(114,90,193,0.3)]"}
+                       ${
+                         i === currentCardIndex
+                           ? "bg-[rgba(131,238,255,0.8)] transform scale-[1.3] shadow-[0_0_8px_rgba(131,238,255,0.6)]"
+                           : "bg-[rgba(114,90,193,0.3)]"
+                       }
                        transition-all duration-[0.4s] ease-[cubic-bezier(0.175,0.885,0.32,1.275)]
                        cursor-pointer`}
             onClick={() => handleIndicatorClick(i)}
