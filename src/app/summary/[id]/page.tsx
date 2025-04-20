@@ -34,7 +34,7 @@ export default function ConceptNotesPage() {
           formData.append("id", id.toString());
         }
 
-        const res = await axios.post("/api/quiz", formData, {
+        const res = await axios.post("/api/summary", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
