@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   if (!userId) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const { id, qnaMarks } = await req.json();
+  const { id, answers } = await req.json();
 
   try {
     const res = await prisma.documents.update({
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         id,
       },
       data: {
-        qnaMarks,
+        qnaAnswers:answers,
         submissionTime: new Date(),
         isQnaSolveDone: true,
       },

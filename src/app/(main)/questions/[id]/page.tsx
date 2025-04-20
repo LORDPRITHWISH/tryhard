@@ -4,13 +4,13 @@ import axios from "axios";
 import RPGQuiz from "@/components/RPGQuiz";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 export default function Home() {
   const [questions, setQuestions] = useState([]);
   const [Loading, setLoading] = useState(true);
-
-
- 
+  const [qnaSolveDone, setQnaSolveDone] = useState(false);
+  const [qnaAnswers, setQnaAnswers] = useState([]);
 
   const { id } = useParams();
 
@@ -31,6 +31,8 @@ export default function Home() {
         console.log("data is ", res.data);
         setLoading(false);
         setQuestions(res.data.QNA);
+        setQnaSolveDone(res.data.isQnaSolveDone);
+        setQnaAnswers(res.data.qnaAnswers);
       } catch (err) {
         console.error("Failed to fetch questions", err);
         setLoading(false);
@@ -40,10 +42,24 @@ export default function Home() {
     if (id) fetchQuestions();
   }, [id]);
 
+  const quizSubmissionHandler = async (answers: string[]) => {
+    try {
+      const response = await axios.post(
+        "/api/quiz/submit",
+        { answers, id },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("Quiz submitted successfully!");
+    } catch (error) {
+      console.error("Failed to submit quiz", error);
+      toast.error("Quiz submission failed!");
+    }
+  };
   return (
     <main className="min-h-screen bg-black text-white font-sans">
       <div className="App">
-       
         {Loading ? (
           <h1 className="text-4xl font-bold mb-8">Loading...</h1>
         ) : (
@@ -54,8 +70,9 @@ export default function Home() {
               <RPGQuiz
                 questions={questions}
                 onComplete={(answers) => {
-                  console.log(`Quiz completed! Answers: ${answers.join(", ")}`);
+                  quizSubmissionHandler(answers);
                 }}
+                previousanswers={qnaSolveDone ? qnaAnswers : undefined}
               />
             )}
           </div>
