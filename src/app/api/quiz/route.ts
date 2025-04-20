@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         qnaMarks: true,
         submissionTime: true,
         isQnaSolveDone: true,
+        qnaAnswers: true,
       },
     });
     if (!docs.length) {
@@ -33,7 +34,16 @@ export async function POST(req: Request) {
     }
 
     if (docs[0].isQNADone) {
-      return Response.json({ QNA: docs[0].qna }, { status: 200 });
+      return Response.json(
+        {
+          QNA: docs[0].qna,
+          isQnaSolveDone: docs[0].isQnaSolveDone,
+          qnaAnswers: docs[0].qnaAnswers,
+          qnaMarks: docs[0].qnaMarks,
+          submissionTime: docs[0].submissionTime,
+        },
+        { status: 200 }
+      );
     } else {
       const publicId = docs[0].publicId;
       const imagepaths = [];
@@ -53,7 +63,11 @@ export async function POST(req: Request) {
           qna: receiptData,
         },
       });
-      return Response.json({ QNA: receiptData }, { status: 200 });
+
+      return Response.json(
+        { QNA: receiptData, isQnaSolveDone: false },
+        { status: 200 }
+      );
     }
   } catch (error: unknown) {
     console.log(error);

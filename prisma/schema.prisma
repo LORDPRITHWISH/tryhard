@@ -44,6 +44,7 @@ model documents {
   qnaMarks       Int       @default(0)
   submissionTime DateTime?
   isQnaSolveDone Boolean   @default(false)
+  qnaAnswers     String[]  @default([])
 }
 
 model expertBot {

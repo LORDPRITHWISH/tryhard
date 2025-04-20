@@ -11,6 +11,7 @@ import {
   IconChartBubble,
   IconArrowLeft,
 } from "@tabler/icons-react";
+import { useParams } from "next/navigation";
 
 type Props = {
   children: ReactNode;
@@ -18,32 +19,34 @@ type Props = {
 
 export function DarkSidebar({ children }: Props) {
   const [open, setOpen] = useState(false);
+  const params = useParams();
+  const id = params?.id;
 
   const links = [
     {
       label: "Summarize",
-      href: "/summary",
+      href: `/summary/${id}`,
       icon: (
         <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "NoteCards",
-      href: "/points",
+      href: `/points/${id}`,
       icon: (
         <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Chat",
-      href: "/chat",
+      href: `/chat/${id}`,
       icon: (
         <IconNewSection className="h-5 w-5 text-neutral-500 dark:text-neutral-300" />
       ),
     },
     {
       label: "QNA",
-      href: "/questions",
+      href: `/questions/${id}`,
       icon: (
         <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
