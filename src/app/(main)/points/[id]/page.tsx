@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import TurnCards from "@/components/TurnCards";
+import MultiLoader from "@/components/loaders/MultiLoader";
 
 export default function Home() {
   const [spaceCards, setSpaceCards] = useState([]);
@@ -41,7 +42,7 @@ export default function Home() {
         <TurnCards cardData={spaceCards} />
       ) : (
         // <p>woww</p>
-        <p className="text-lg text-gray-400">Loading flashcards...</p>
+        <MultiLoader />
       )}
     </div>
   );

@@ -48,7 +48,6 @@ export default function PDFMultiFileChatBot() {
     setError(null);
     setIsTyping(true);
 
- 
     setChat((prevChat) => [...prevChat, { role: "user", content: question }]);
 
     try {
@@ -91,14 +90,14 @@ export default function PDFMultiFileChatBot() {
   }, [chat, isTyping]);
 
   return (
-    <div className="flex flex-col  bg-gradient-to-r from-blue-950 to-gray-900 p-4 md:p-8">
-      <Card className="min-h-screen flex flex-col flex-1 shadow-xl border-0 bg-gradient-to-r from-blue-950 to-gray-900 text-white backdrop-blur-sm">
-        <CardHeader className="border-b bg-gradient-to-r from-[#3b82f6] to-[#3d73cb] text-white rounded-t-lg">
+    <div className="flex flex-col p-4 md:p-8 min-h-screen">
+      <Card className="flex flex-col flex-1 shadow-lg border border-gray-700 bg-transparent text-white">
+        <CardHeader className="border-b border-gray-700 bg-transparent rounded-t-lg">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/20 rounded-lg">
-              <FileText className="h-6 w-6" />
+            <div className="p-2 bg-gray-800 rounded-lg">
+              <FileText className="h-6 w-6 text-blue-400" />
             </div>
-            <CardTitle className="text-xl md:text-2xl font-bold py-5 flex align-middle justify-center">
+            <CardTitle className="text-xl md:text-2xl font-bold">
               PDF Chat Assistant
             </CardTitle>
           </div>
@@ -107,12 +106,12 @@ export default function PDFMultiFileChatBot() {
         <CardContent className="flex-1 flex flex-col p-0">
           <div
             ref={chatWindowRef}
-            className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-violet-300 scrollbar-track-transparent"
+            className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
           >
             {chat.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center p-6 text-gray-300 space-y-4">
-                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
-                  <Bot className="h-8 w-8 text-[#3b82f6]" />
+              <div className="flex flex-col items-center justify-center h-full text-center p-6 text-gray-400 space-y-4">
+                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700">
+                  <Bot className="h-8 w-8 text-blue-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-medium text-white">
@@ -141,26 +140,26 @@ export default function PDFMultiFileChatBot() {
                   >
                     <Avatar
                       className={cn(
-                        "h-8 w-8 border-2",
+                        "h-8 w-8 border",
                         message.role === "user"
-                          ? "bg-[#3b82f6] border-violet-300"
-                          : "bg-[#2e7dfd] border-purple-300"
+                          ? "bg-gray-800 border-gray-700"
+                          : "bg-gray-800 border-gray-700"
                       )}
                     >
                       <AvatarFallback>
                         {message.role === "user" ? (
-                          <User className="h-4 w-4" />
+                          <User className="h-4 w-4 text-blue-400" />
                         ) : (
-                          <Bot className="h-4 w-4" />
+                          <Bot className="h-4 w-4 text-blue-400" />
                         )}
                       </AvatarFallback>
                     </Avatar>
                     <div
                       className={cn(
-                        "rounded-2xl px-4 py-3 text-sm md:text-base animate-fade-in",
+                        "rounded-lg px-4 py-3 text-sm md:text-base animate-fade-in",
                         message.role === "user"
-                          ? "bg-[#2e7df6] text-white rounded-tr-none"
-                          : "bg-gray-700 text-white rounded-tl-none"
+                          ? "bg-blue-600 text-white rounded-tr-none"
+                          : "bg-gray-800 text-white rounded-tl-none border border-gray-700"
                       )}
                     >
                       {formatBoldText(message.content)}
@@ -172,23 +171,23 @@ export default function PDFMultiFileChatBot() {
 
             {isTyping && (
               <div className="flex items-start gap-2">
-                <Avatar className="h-8 w-8 bg-[#3b82f6] border-2 border-purple-300">
+                <Avatar className="h-8 w-8 bg-gray-800 border border-gray-700">
                   <AvatarFallback>
-                    <Bot className="h-4 w-4" />
+                    <Bot className="h-4 w-4 text-blue-400" />
                   </AvatarFallback>
                 </Avatar>
-                <div className="bg-gray-700 rounded-2xl rounded-tl-none px-4 py-3">
+                <div className="bg-gray-800 rounded-lg rounded-tl-none px-4 py-3 border border-gray-700">
                   <div className="flex space-x-1">
                     <div
-                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      className="h-2 w-2 bg-gray-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0ms" }}
                     ></div>
                     <div
-                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      className="h-2 w-2 bg-gray-500 rounded-full animate-bounce"
                       style={{ animationDelay: "150ms" }}
                     ></div>
                     <div
-                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      className="h-2 w-2 bg-gray-500 rounded-full animate-bounce"
                       style={{ animationDelay: "300ms" }}
                     ></div>
                   </div>
@@ -198,14 +197,14 @@ export default function PDFMultiFileChatBot() {
           </div>
 
           {error && (
-            <div className="px-4 py-2 bg-red-900/50 border-l-4 border-red-500 text-white text-sm">
+            <div className="px-4 py-2 bg-red-900/50 border-l-4 border-red-600 text-white text-sm">
               {error}
             </div>
           )}
 
           <form
             onSubmit={handleSubmit}
-            className="p-4 border-t border-gray-700 bg-gray-800 backdrop-blur-sm rounded-b-lg"
+            className="p-4 border-t border-gray-700 bg-transparent rounded-b-lg"
           >
             <div className="flex gap-2">
               <Input
@@ -214,13 +213,13 @@ export default function PDFMultiFileChatBot() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ask a question about your PDF..."
-                className="flex-1 bg-gray-700 text-white border-gray-600 focus:border-[#5393fa] focus:ring-[#3b82f6] placeholder:text-gray-400"
+                className="flex-1 bg-gray-800 text-white border-gray-700 focus:border-blue-500 focus:ring-blue-600 placeholder:text-gray-400"
                 disabled={loading}
               />
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-[#0a68ff] hover:bg-[#3b83f6] text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

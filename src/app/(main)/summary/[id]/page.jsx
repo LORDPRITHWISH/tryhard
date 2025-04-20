@@ -4,9 +4,9 @@ import ExamNotesSummary from "@/components/ExamNotesSummary";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import MultiLoader from "@/components/loaders/MultiLoader";
 
 export default function ConceptNotesPage() {
-  
   const [conceptsData, setconceptsData] = useState(null);
   const [Loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ export default function ConceptNotesPage() {
         });
 
         console.log("data is ", res.data);
-        setconceptsData(res.data); // assuming res.data = { summary: [...] }
+        setconceptsData(res.data);
         setLoading(false);
       } catch (err) {
         console.error("Failed to fetch Summary", err);
@@ -41,7 +41,7 @@ export default function ConceptNotesPage() {
     <div className="min-h-screen">
       {Loading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <p>Loading...</p>
+          <MultiLoader />
         </div>
       ) : (
         conceptsData &&

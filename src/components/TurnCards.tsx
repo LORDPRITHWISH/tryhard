@@ -77,13 +77,12 @@ export default function TurnCards({ cardData }: TurnCardsProps) {
 
           <div className="space-y-2">
             {cardData[currentCard].facts.map((fact, index) => (
-              <p key={index} className="text-lg text-gray-300 text-center">
-                {fact}
+              <p key={index} className="text-md text-gray-300 text-start">
+                * {fact}
               </p>
             ))}
           </div>
         </div>
-
         <div className="mt-6 flex justify-center space-x-4">
           <button
             onClick={togglePause}
