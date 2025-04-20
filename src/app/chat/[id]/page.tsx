@@ -1,60 +1,55 @@
-"use client";
+"use client"
 
-import { useParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { Send, FileText, Loader2 } from "lucide-react";
+import type React from "react"
+
+import { useParams } from "next/navigation"
+import { useState, useEffect, useRef } from "react"
+import { Send, FileText, Loader2, Bot, User } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { cn } from "@/lib/utils"
 
 interface ChatMessage {
-  role: "user" | "bot";
-  content: string;
-  timestamp: string;
+  role: "user" | "bot"
+  content: string
 }
 
 export default function PDFMultiFileChatBot() {
-  const { id } = useParams();
-  const [question, setQuestion] = useState<string>("");
-  const [chat, setChat] = useState<ChatMessage[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const { id } = useParams()
+  const [question, setQuestion] = useState<string>("")
+  const [chat, setChat] = useState<ChatMessage[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isTyping, setIsTyping] = useState<boolean>(false)
 
-  const chatWindowRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const chatWindowRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const formatBoldText = (text: string): JSX.Element[] => {
-    const parts = text.split(/(\*\*.*?\*\*)/g);
+    const parts = text.split(/(\*\*.*?\*\*)/g)
     return parts.map((part, index) => {
       if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={index}>{part.slice(2, -2)}</strong>;
+        return <strong key={index}>{part.slice(2, -2)}</strong>
       }
-      return <span key={index}>{part}</span>;
-    });
-  };
-
-  const getCurrentTime = (): string => {
-    return new Date().toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
-  };
+      return <span key={index}>{part}</span>
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!question.trim()) {
-      setError("Please enter a question.");
-      return;
+      setError("Please enter a question.")
+      return
     }
 
-    setLoading(true);
-    setError(null);
-    
-    const currentQuestion = question;
-    setQuestion("");
-    
-    // Add user message immediately for better UX
-    setChat(prevChat => [
-      ...prevChat,
-      { role: "user", content: currentQuestion, timestamp: getCurrentTime() }
-    ]);
+    setLoading(true)
+    setError(null)
+    setIsTyping(true)
+
+    // Add user message immediately
+    setChat((prevChat) => [...prevChat, { role: "user", content: question }])
 
     try {
       const response = await fetch("/api/chat", {
@@ -64,134 +59,151 @@ export default function PDFMultiFileChatBot() {
         },
         body: JSON.stringify({
           id,
-          question: currentQuestion,
+          question,
         }),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
       if (response.ok) {
-        setChat(prevChat => [
-          ...prevChat,
-          { role: "bot", content: data.answer, timestamp: getCurrentTime() }
-        ]);
+        // Add bot message after response
+        setChat((prevChat) => [...prevChat, { role: "bot", content: data.answer }])
       } else {
-        setError(data.error || "Failed to process the PDF.");
+        setError(data.error || "Failed to process the PDF.")
       }
     } catch (err: unknown) {
-      setError("An error occurred while contacting the server.");
-      console.error(err);
+      setError("An error occurred while contacting the server." + err)
     } finally {
-      setLoading(false);
-      // Focus input after sending
-      inputRef.current?.focus();
+      setQuestion("")
+      setLoading(false)
+      setIsTyping(false)
+      // Focus the input after sending
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
     }
-  };
+  }
 
   useEffect(() => {
     if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight
     }
-  }, [chat]);
+  }, [chat, isTyping])
 
   return (
-    <div className="flex flex-col h-screen max-h-screen bg-[#111827]">
-      {/* Header */}
-      <header className="bg-[#1F2937] border-b border-gray-800 p-4 shadow-md">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center space-x-3">
-            <FileText className="text-indigo-400 h-6 w-6" />
-            <h1 className="text-2xl font-bold text-white">PDF Chat Assistant</h1>
+    <div className="flex flex-col  bg-gradient-to-r from-blue-950 to-gray-900 p-4 md:p-8">
+      <Card className="min-h-screen flex flex-col flex-1 shadow-xl border-0 bg-gradient-to-r from-blue-950 to-gray-900 text-white backdrop-blur-sm">
+        <CardHeader className="border-b bg-gradient-to-r from-[#3b82f6] to-[#3d73cb] text-white rounded-t-lg">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg">
+              <FileText className="h-6 w-6" />
+            </div>
+            <CardTitle className="text-xl md:text-2xl font-bold py-5 flex align-middle justify-center">PDF Chat Assistant</CardTitle>
           </div>
-          {id && (
-            <div className="text-sm text-gray-300 px-3 py-1 bg-gray-700 rounded-full">
-              Document ID: {id}
-            </div>
-          )}
-        </div>
-      </header>
+        </CardHeader>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-hidden p-4 md:p-6 max-w-6xl w-full mx-auto">
-        {/* Chat Window */}
-        <div 
-          ref={chatWindowRef}
-          className="flex-1 overflow-y-auto bg-[#0B1121] rounded-lg h-[calc(100vh-220px)] p-4 mb-4"
-        >
-          {chat.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-500">
-              <FileText className="h-16 w-16 mb-4 text-indigo-500 opacity-50" />
-              <p className="text-center max-w-md">
-                Ask questions about your PDF documents and get instant answers. 
-                Your conversation will appear here.
-              </p>
-            </div>
-          ) : (
-            chat.map((message, index) => (
-              <div
-                key={index}
-                className={`mb-4 ${message.role === "user" ? "flex justify-end" : "flex justify-start"}`}
-              >
+        <CardContent className="flex-1 flex flex-col p-0">
+          <div
+            ref={chatWindowRef}
+            className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-violet-300 scrollbar-track-transparent"
+          >
+            {chat.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center p-6 text-gray-300 space-y-4">
+                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
+                  <Bot className="h-8 w-8 text-[#3b82f6]" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-white">Welcome to PDF Chat Assistant</h3>
+                  <p className="max-w-md mt-2">Ask questions about your PDF documents and get instant answers.</p>
+                </div>
+              </div>
+            ) : (
+              chat.map((message, index) => (
                 <div
-                  className={`relative max-w-3/4 md:max-w-2/3 px-4 py-3 rounded-2xl ${
-                    message.role === "user"
-                      ? "bg-indigo-600 text-white"
-                      : "bg-[#2D3748] text-white"
-                  }`}
+                  key={index}
+                  className={cn("flex w-full", message.role === "user" ? "justify-end" : "justify-start")}
                 >
-                  <div className="whitespace-pre-wrap">
-                    {formatBoldText(message.content)}
-                  </div>
                   <div
-                    className={`text-xs mt-1 ${
-                      message.role === "user" ? "text-indigo-200" : "text-gray-400"
-                    }`}
+                    className={cn(
+                      "flex items-start gap-2 max-w-[80%]",
+                      message.role === "user" ? "flex-row-reverse" : "flex-row",
+                    )}
                   >
-                    {message.timestamp}
+                    <Avatar
+                      className={cn(
+                        "h-8 w-8 border-2",
+                        message.role === "user" ? "bg-[#3b82f6] border-violet-300" : "bg-[#2e7dfd] border-purple-300",
+                      )}
+                    >
+                      <AvatarFallback>
+                        {message.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div
+                      className={cn(
+                        "rounded-2xl px-4 py-3 text-sm md:text-base animate-fade-in",
+                        message.role === "user"
+                          ? "bg-[#2e7df6] text-white rounded-tr-none"
+                          : "bg-gray-700 text-white rounded-tl-none",
+                      )}
+                    >
+                      {formatBoldText(message.content)}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+
+            {isTyping && (
+              <div className="flex items-start gap-2">
+                <Avatar className="h-8 w-8 bg-[#3b82f6] border-2 border-purple-300">
+                  <AvatarFallback>
+                    <Bot className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="bg-gray-700 rounded-2xl rounded-tl-none px-4 py-3">
+                  <div className="flex space-x-1">
+                    <div
+                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    ></div>
+                    <div
+                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    ></div>
+                    <div
+                      className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    ></div>
                   </div>
                 </div>
               </div>
-            ))
-          )}
-          {loading && (
-            <div className="flex justify-start mb-4">
-              <div className="bg-[#2D3748] rounded-2xl px-4 py-3 flex items-center">
-                <Loader2 className="h-5 w-5 text-indigo-400 animate-spin mr-2" />
-                <span className="text-gray-300">Thinking...</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Input Form */}
-        <div className="relative bg-[#1F2937] rounded-full p-1 shadow-lg">
-          <form onSubmit={handleSubmit} className="flex items-center">
-            <input
-              ref={inputRef}
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask a question about your PDF..."
-              className="w-full p-3 px-5 bg-transparent text-white placeholder-gray-400 focus:outline-none"
-              disabled={loading}
-              autoFocus
-            />
-            <button
-              type="submit"
-              disabled={loading || !question.trim()}
-              className="p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200 disabled:bg-gray-700 disabled:opacity-50 mr-1"
-              aria-label="Send message"
-            >
-              <Send className="h-5 w-5" />
-            </button>
-          </form>
-        </div>
-
-        {error && (
-          <div className="mt-3 p-3 bg-red-900/30 border-l-4 border-red-500 text-red-200 rounded">
-            <p className="text-sm">{error}</p>
+            )}
           </div>
-        )}
-      </main>
+
+          {error && <div className="px-4 py-2 bg-red-900/50 border-l-4 border-red-500 text-white text-sm">{error}</div>}
+
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 border-t border-gray-700 bg-gray-800 backdrop-blur-sm rounded-b-lg"
+          >
+            <div className="flex gap-2">
+              <Input
+                ref={inputRef}
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Ask a question about your PDF..."
+                className="flex-1 bg-gray-700 text-white border-gray-600 focus:border-[#5393fa] focus:ring-[#3b82f6] placeholder:text-gray-400"
+                disabled={loading}
+              />
+              <Button type="submit" disabled={loading} className="bg-[#0a68ff] hover:bg-[#3b83f6] text-white">
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                <span className="sr-only">Send message</span>
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }
