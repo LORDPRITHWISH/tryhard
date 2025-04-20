@@ -42,3 +42,10 @@ model documents {
   qna           Json?
 }
 
+model expertBot {
+  id           String @id @default(cuid())
+  name         String
+  avatar       String
+  systemPrompt String
+  coarse       String
+}
