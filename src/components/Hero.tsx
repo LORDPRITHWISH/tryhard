@@ -28,7 +28,7 @@ const HeroPage = () => {
               </span>
             </span>
           </span>
-          study,
+          Learning,
           <br />
           streamline
           <span className="inline-flex items-center justify-center mx-2">
@@ -52,9 +52,9 @@ const HeroPage = () => {
               </span>
             </span>
           </span>
-          processes, and
+          Streamline Study, 
           <br />
-          boost study 
+          and Boost 
           <span className="inline-flex items-center justify-center mx-2">
             <span className="relative">
               <span className="bg-[#3b82f6] w-12 h-12 rounded-full flex items-center justify-center">
@@ -78,7 +78,7 @@ const HeroPage = () => {
               </span>
             </span>
           </span>
-          growth
+          Performance
         </h1>
 
         <div className="mt-10 p-7">

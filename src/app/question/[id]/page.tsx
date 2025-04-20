@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans">
       <div className="App">
-        {/* Static Star Background with twinkling animation */}
+       
         <div className="absolute inset-0 overflow-hidden">
           {stars.map((star, i) => (
             <motion.div

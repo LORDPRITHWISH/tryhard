@@ -1,3 +1,4 @@
+
 import HeroPage from '@/components/Hero'
 import React from 'react'
 import PricingPage from '@/components/Pricing'
@@ -11,13 +12,12 @@ import {
   IconHome,
   IconNewSection,
 } from "@tabler/icons-react";
-import { FloatingDock } from '@/components/ui/floating-dock'
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-r from-black to-gray-900">
-      {/* Navigation Section */}
-      {/* <div className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
+     
+      <div className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
         <div className="flex items-center justify-center h-20 w-full">
           <FloatingDock 
             items={[
@@ -46,11 +46,12 @@ export default function Home() {
                 icon: <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
                 href: "#"
               },
-            ]} desktopClassName={undefined} mobileClassName={undefined}          />
+            ]}
+          />
         </div>
-      </div> */}
+      </div>
 
-      {/* Main Content */}
+      
       <div className="flex-1 pt-20">
         <div className="space-y-20">
           <HeroPage />
@@ -60,7 +61,7 @@ export default function Home() {
         </div>
       </div>
       
-      {/* Footer */}
+     
       <FintreeFooter />
     </main>
   );
