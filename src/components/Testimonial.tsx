@@ -8,29 +8,30 @@ export default function TestimonialsSection() {
     {
       id: 1,
       name: "Sophia",
-      position: "Founder Of Cloud",
+      position: "Engineering Student",
       image: "/api/placeholder/60/60",
-      quote: "We Partnered With ScaleX To Refine Our Marketing Efforts And The Results Have Been Outstanding. Their Creative Campaigns And Precise Execution Not Only Improved Our Brand Visibility But Also Fostered Better Customer Retention.",
-      icon: <Cloud className="w-6 h-6 text-white" />
+      quote:
+        "Before using this AI study companion, I would spend hours trying to understand dense material and still feel lost. Now, I get instant summaries, flashcards, and quizzes tailored to my classes. My grades improved dramatically, and studying feels easier than ever!",
+      icon: <Cloud className="w-6 h-6 text-white" />,
     },
     {
       id: 2,
       name: "Anjela",
-      position: "CEO Of TechNova",
+      position: "Engineering Student",
       image: "/api/placeholder/60/60",
-      quote: "Working With ScaleX Has Been A Game Changer For Our Business. Their Innovative Strategies And Hands-On Approach Have Significantly Boosted Our Lead Generation.",
-      icon: <RefreshCw className="w-6 h-6 text-white" />
+      quote:
+        "Uploading my lecture slides and getting a personalized study plan and revision guide was a game changer. The MCQs and instant feedback made revision so much more effective. I love tracking my progress and earning points for every session!",
+      icon: <RefreshCw className="w-6 h-6 text-white" />,
     },
     {
       id: 3,
       name: "Mark",
-      position: "CMO Of InnoSaaS",
+      position: "Engineering Student",
       image: "/api/placeholder/60/60",
-      quote: "ScaleX Transformed Our Digital Marketing Strategy. Their Deep Understanding Of SaaS Dynamics And Data-Driven Approach Allowed Us To Target The Right Audience, Resulting In A 40% Increase In Sales Within Six Months.",
-      icon: <Cloud className="w-6 h-6 text-white" />
-    }
+      quote:
+        "The dedicated AI agents for each subject are incredible. I struggled with computer networks, but the specialized agent explained every concept in detail and generated practice questions that boosted my confidence for exams.",
+    },
   ];
-
   return (
     <div className="bg-gradient-to-r from-black to-gray-900 text-white py-16 px-4 mb-0">
       <div className="max-w-6xl mx-auto">
@@ -66,14 +67,14 @@ export default function TestimonialsSection() {
         
             <div className="mb-4">
               <img
-                src="https://ik.imagekit.io/7b4kwmuj2/user1.jpg?updatedAt=1745098287128" 
+                src="https://ik.imagekit.io/7b4kwmuj2/Screenshot%202025-04-20%20124332.png?updatedAt=1745135764094" 
                 alt="Orange cat looking up" 
                 className="w-full h-40 object-cover rounded-lg"
               />
             </div>
             
             <p className="text-gray-400">
-              We Partnered With ScaleX To Refine Our Marketing Efforts And The Results Have Been Outstanding. Their Creative Campaigns And Precise Execution Not Only Improved Our Brand Visibility But Also Fostered Better Customer Retention.
+              We Partnered With tryhard To Refine Our Marketing Efforts And The Results Have Been Outstanding. Their Creative Campaigns And Precise Execution Not Only Improved Our Brand Visibility But Also Fostered Better Customer Retention.
             </p>
           </div>
           
@@ -98,7 +99,7 @@ export default function TestimonialsSection() {
               </div>
               
               <p className="text-gray-400">
-                Working With ScaleX Has Been A Game Changer For Our Business. Their Innovative Strategies And Hands-On Approach Have Significantly Boosted Our Lead Generation.
+                Working With tryhard Has Been A Game Changer For Our Business. Their Innovative Strategies And Hands-On Approach Have Significantly Boosted Our Lead Generation.
               </p>
             </div>
             
@@ -121,7 +122,7 @@ export default function TestimonialsSection() {
               </div>
               
               <p className="text-gray-400">
-                ScaleX Transformed Our Digital Marketing Strategy. Their Deep Understanding Of SaaS Dynamics And Data-Driven Approach Allowed Us To Target The Right Audience, Resulting In A 40% Increase In Sales Within Six Months.
+              tryhard Transformed Our Digital Marketing Strategy. Their Deep Understanding Of SaaS Dynamics And Data-Driven Approach Allowed Us To Target The Right Audience, Resulting In A 40% Increase In Sales Within Six Months.
               </p>
             </div>
           </div>

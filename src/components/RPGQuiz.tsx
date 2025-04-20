@@ -174,7 +174,7 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
           </div>
         )}
 
-        {/* Review Mode Banner with Continue Button - shows when viewing answered questions */}
+       
         {isCurrentQuestionAnswered && !showFeedback && !isCompleted && (
             <div
                 className="bg-gradient-to-r from-indigo-900/70 via-purple-900/70 to-indigo-900/70 border-t border-indigo-700/80 p-3 flex justify-between items-center z-50 relative"
@@ -224,7 +224,7 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
             </div>
         )}
 
-        {/* Footer */}
+     
         <div className="bg-gray-950/90 border-t border-indigo-800/80 p-4 flex justify-between items-center z-10">
           <div className="text-indigo-400 font-mono">
             <span className="text-indigo-500">QUERY</span>: {currentStep} / {totalSteps}
@@ -258,7 +258,7 @@ export default function RPGQuiz({ questions, onComplete = () => {} }: RPGQuizPro
   );
 }
 
-// Question Component
+
 interface QuestionProps {
   questionData: Question;
   onAnswerSelect: (selectedAnswer: string) => void;
@@ -288,7 +288,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
           let optionStyle = "border border-indigo-800 bg-gray-900 text-gray-200";
           let glowEffect = "";
 
-          // When showing feedback or in review mode, highlight correct/incorrect
+         
           if ((showFeedback || isReviewMode) && isSelected) {
             optionStyle = isCorrect ? 
               "border-2 border-green-600 bg-gradient-to-br from-green-900/50 to-green-950 text-green-300" : 
@@ -329,7 +329,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
                 </div>
                 <span>{option}</span>
 
-                {/* Show feedback icons */}
+              
                 {(showFeedback || isReviewMode) && isSelected && (
                   <motion.span 
                     className="ml-auto"
@@ -343,7 +343,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
                   </motion.span>
                 )}
 
-                {/* Always show correct answer in review mode */}
+             
                 {(showFeedback || isReviewMode) && !isSelected && isCorrect && (
                   <motion.span 
                     className="ml-auto"
@@ -356,7 +356,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
                 )}
               </div>
               
-              {/* Subtle glow effect overlay */}
+             
               {!isDisabled && (
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity"></div>
               )}
@@ -365,7 +365,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
         })}
       </div>
 
-      {/* Answer legend in review mode */}
+    
       {isReviewMode && (
         <motion.div 
           className="mt-6 p-4 rounded bg-gray-800/80 border border-indigo-800"
@@ -400,7 +400,7 @@ function Question({ questionData, onAnswerSelect, questionNumber, showFeedback, 
   );
 }
 
-// Step Indicator Component with glow effects
+
 function StepIndicator({
   step,
   currentStep,
@@ -416,7 +416,7 @@ function StepIndicator({
   onClickStep: (step: number) => void;
   isNavigable: boolean;
 }) {
-  let bgColor = "bg-gray-800"; // Default unanswered
+  let bgColor = "bg-gray-800";
   let textColor = "text-gray-400";
   let borderColor = "border-gray-700";
   let glowEffect = "";
@@ -466,7 +466,6 @@ function StepIndicator({
   );
 }
 
-// Progress Connector with improved animation
 function ProgressConnector({ isCompleted, isCorrect }: { isCompleted: boolean; isCorrect: boolean }) {
   return (
     <div className="relative h-1 w-12 bg-gray-800 overflow-hidden rounded-full">
@@ -489,7 +488,7 @@ function ProgressConnector({ isCompleted, isCorrect }: { isCompleted: boolean; i
   );
 }
 
-// Completion Screen with improved animations and effects
+
 function CompleteScreen({ score, totalQuestions, answers, questions }: { score: number; totalQuestions: number; answers: string[]; questions: Question[] }) {
   const percentage = Math.round((score / totalQuestions) * 100);
   const [showConfetti, setShowConfetti] = useState(percentage >= 70);
@@ -497,15 +496,15 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
 
   useEffect(() => {
     if (showConfetti) {
-      // Use fewer particles for better performance
+     
       const particles = Array.from({ length: 50 }, () => ({
         x: Math.random() * 100,
-        y: -10 - Math.random() * 20, // Start above the viewport
+        y: -10 - Math.random() * 20, 
         color: ["#6366F1", "#3B82F6", "#10B981", "#8B5CF6"][Math.floor(Math.random() * 4)],
       }));
       setConfettiParticles(particles);
 
-      // Hide confetti after a while
+    
       const timer = setTimeout(() => {
         setShowConfetti(false);
       }, 4000);
@@ -514,7 +513,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
     }
   }, [showConfetti]);
 
-  // Determine message based on score
+
   let message = "";
   let messageColor = "";
   let messageBg = "";
@@ -544,7 +543,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
 
   return (
     <div className="py-12 px-8 text-center relative">
-      {/* Enhanced confetti animation for high scores */}
+
       {showConfetti &&
         confettiParticles.map((particle, i) => (
           <motion.div
@@ -602,7 +601,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
             {percentage}%
           </motion.span>
 
-          {/* Circular progress with glow */}
+          
           <svg className="absolute inset-0" width="100%" height="100%" viewBox="0 0 100 100">
             <defs>
               <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -659,7 +658,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
         questions correctly.
       </motion.div>
 
-      {/* Results Summary Table with enhanced styling */}
+      
       <motion.div 
         className="max-w-lg mx-auto mt-8 bg-gray-800/80 rounded-lg p-4 border border-indigo-700/50 overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
@@ -671,7 +670,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
         }}
       >
         <div className="relative">
-          {/* Background pulse effect */}
+    
           <div className="absolute inset-0 overflow-hidden">
             <motion.div
               className="w-full h-full rounded-full bg-indigo-600/10"
@@ -687,7 +686,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
             />
           </div>
           
-          {/* Content */}
+    
           <div className="relative z-10">
             <h3 
               className="text-lg font-semibold text-indigo-300 mb-4 flex items-center justify-center"
@@ -788,7 +787,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
         </div>
       </motion.div>
 
-      {/* Try Again Button with glow effect */}
+      
       <motion.div 
         className="mt-10"
         initial={{ opacity: 0, y: 20 }}
@@ -802,7 +801,7 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
             boxShadow: "0 0 15px rgba(99, 102, 241, 0.5)" 
           }}
         >
-          {/* Pulsing glow effect */}
+         
           <motion.div 
             className="absolute inset-0 bg-indigo-500/30"
             animate={{ 
@@ -815,10 +814,9 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
             }}
           />
           
-          {/* Hover light effect */}
+       
           <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           
-          {/* Button content */}
           <span className="relative z-10">Embark Again</span>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
@@ -829,7 +827,6 @@ function CompleteScreen({ score, totalQuestions, answers, questions }: { score: 
   );
 }
 
-// Success Icon with glow effect
 function SuccessIcon({ className = "h-6 w-6" }: { className?: string }) {
   return (
     <svg 
@@ -845,7 +842,7 @@ function SuccessIcon({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
-// Fail Icon with glow effect
+
 function FailIcon({ className = "h-6 w-6" }: { className?: string }) {
   return (
     <svg 
@@ -865,10 +862,3 @@ function FailIcon({ className = "h-6 w-6" }: { className?: string }) {
 function setBorderAnimation(arg0: (prev: any) => number) {
   throw new Error("Function not implemented.");
 }
-// Add these styles to your global CSS or Tailwind config
-// .drop-shadow-glow-green {
-//   filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.7));
-// }
-// .drop-shadow-glow-red {
-//   filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.7));
-// }
